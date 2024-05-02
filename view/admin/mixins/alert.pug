@@ -1,0 +1,35 @@
+mixin alert-success(time)
+    - if (messages.success)
+        .message-success 
+            div(
+                class="alert alert-success"
+                show-alert
+                data-time=time
+            ) #{messages.success} <span close-alert>x </span>   
+
+mixin alert-danger(time)
+    - if (messages.error)
+        .message-error 
+            div(
+                class="alert alert-danger"
+                show-alert
+                data-time=time
+            ) #{messages.error} <span close-alert>x </span>   
+
+mixin alert-find(time)
+    - if (messages.find)
+        .message-find 
+            div(
+                class="alert alert-success"
+                show-alert
+                data-time=time
+            ) #{messages.find} <span close-alert>x </span>   
+
+mixin alert-delete(time)
+    - if (messages.delete)
+        .message-delete 
+            div(
+                class="alert alert-success"
+                show-alert
+                data-time=time
+            ) #{messages.delete} <span close-alert>x </span> 

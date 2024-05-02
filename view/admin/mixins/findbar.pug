@@ -1,0 +1,17 @@
+mixin find(keyword)
+     form(id="form-search" style="padding: 10px; margin-right:100px")
+        .input-group 
+            input(
+                type ="text"
+                placeholder= "Nhập từ khóa"
+                name="keyword"
+                class="form-control"
+                style="width: 10px"
+                value= keyword
+            )
+            .input-group-append 
+                button( 
+                    class="btn btn-success"
+                    type = "sumbit"
+
+                ) Tìm

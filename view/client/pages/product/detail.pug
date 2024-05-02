@@ -1,0 +1,30 @@
+extends ../../layout/default.pug
+
+block title 
+    title title 
+
+block main 
+    h1(class="mb-3") Trang chi tiet san pham
+
+    div(class="row-10 m-3 d-flex justify-content-evenly")
+        div(class="img img-thumbnail")
+            if(product.thumbnail)
+                div(class="mb-4") 
+                    img(src=product.thumbnail, alt="", style="width: 500px;")
+        div(class="detail m-3")
+
+            if(product.title)
+                div(class="mb-4" style="font-size: 30px;") Tên sản phẩm: <b>#{product.title}</b>
+
+            if(product.description)
+                div(class="mb-4") Mô tả: <b>#{product.description}</b>
+
+            if(product.price)
+                div(class="mb-4") Giá: <b>#{product.price}$</b>
+
+            if(product.discountPercentage)
+                div(class="mb-4") Giảm giá: <b>#{product.discountPercentage}$</b>
+            if(product.stock)
+                div(class="mb-4") Số lượng: <b>#{product.stock}</b>
+
+        

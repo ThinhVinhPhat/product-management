@@ -1,0 +1,93 @@
+extends ../../layout/default.pug
+include ../../mixins/filterstatus.pug
+include ../../mixins/findbar.pug
+include ../../mixins/pagination.pug
+include ../../mixins/change_multi.pug
+block title
+    title title
+
+
+block main
+    h1 Thùng Rác
+    .card.mb-3 
+        .card-header Bộ lọc và tìm kiếm
+        .card-body
+            .row
+                .col-6  
+                   +filterStatus(filterStatus)
+                .col-6 
+                   +find(keyword)
+
+    .card.mb-3 
+        .card-header Danh sách
+        .card-body
+            +change_multi('/admin/trashbin/change-multi?_method=PATCH')
+                
+            .row
+                table(
+                    class="table table-hover table-sm"
+                    checkbox-multi
+                )
+                
+                    thead 
+                        tr 
+                            th 
+                                input(type="checkbox" name="checkall")
+                            th STT 
+                            th Hình ảnh
+                            th Tiêu đề
+                            th Giá
+                            th Trạng Thái 
+                            th Hành Động 
+
+                    tbody 
+                        each item in product
+                           
+                            tr 
+                                td 
+                                    input(type="checkbox" name="id" value=item.id)
+                                td #{item.position}
+                                td 
+                                    img(src=item.thumbnail  alt=item.title width="100px" height="auto")
+                                td(style="margin: 10px") #{item.title}
+                                td(style="margin: 10px") #{item.price}$
+                                td 
+                                    if(item.status == "active")
+                                        a(href="javascript:;" class="badge badge-success" style="background-color:green; text-decoration: none; margin-top: 15px;"
+                                        pro_status = item.status
+                                        pro_id = item.id
+                                        button-change-status
+                                        ) Hoạt Động
+                                    else
+                                        a(href="javascript:;" class="badge badge-danger" style="background-color:red; text-decoration: none; margin-top: 15px;"
+                                        pro_status = item.status
+                                        pro_id = item.id
+                                        button-change-status
+                                        ) Dừng Hoạt Động
+                                td 
+                                    button(class="btn btn-warning btn-sm" style="margin: 10px"
+                                    pro_id= item.id
+                                    recover_buttons) Khôi Phục
+                                    button(class="btn btn-danger btn-sm ml-1"
+                                        pro_id= item.id
+                                        delete_buttons) Xóa
+                        
+    +pagination(pagination)
+    form(action="", 
+    method="POST",
+    product-path="/admin/trashbin/change-status"
+    id="form-change-status")
+
+    form(action="", 
+    method="POST",
+    product-path="/admin/trashbin/delete"
+    id="form-delete")
+
+
+    form(action="", 
+    method="POST",
+    product-path="/admin/trashbin/recover"
+    id="form-recover")
+
+    script(src="/admin/JS/trashbin.js") 
+        
