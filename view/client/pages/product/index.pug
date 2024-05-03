@@ -14,7 +14,7 @@ block main
             each item in Products
                 .col-4.mb-3 
                     .product-item 
-                        .inner-imgae 
+                        .inner-imgae.d-flex.justify-content-center
                             img(src=item.thumbnail, alt=item.title)
                         .inner-content
                             a(href=`/product/${item.slug}`) 

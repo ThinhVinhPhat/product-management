@@ -48,10 +48,6 @@ module.exports.product = async (req, res) => {
     )
 
 
-
-
-
-
     const products = await Product.find(
         find).limit(4).skip(pagination.skip)
 
@@ -129,7 +125,6 @@ module.exports.create = async (req, res) => {
 }
 
 module.exports.createPost = async (req, res) => {
-    validate.createPost();
     
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
@@ -142,11 +137,6 @@ module.exports.createPost = async (req, res) => {
     }
     else {
         req.body.position = parseInt(req.body.position);
-    }
-
-    if (req.file) {
-
-        req.body.thumbnail = `/upload/${req.file.filename}`
     }
 
     const product = new Product(req.body);

@@ -4,7 +4,8 @@ const controller = require("../../controller/admin/ProductController")
 const validate = require("../../validate/tilte_create.validate")
 const storage = require("../../helper/multerStorage")
 const multer  = require('multer')
-const upload = multer({ storage: storage() })
+const Cloudinary_upload  = require("../../middleware/Cloudinary_upload")
+const upload = multer()
 
 route.get("/",controller.product);
 
@@ -17,10 +18,9 @@ route.delete("/delete/:id",controller.delete)
 route.get("/create",controller.create)
 
 route.post("/create",upload.single('thumbnail'),
+Cloudinary_upload.upload,
 validate.createPost,
 controller.createPost)
-
-
 
 route.get("/edit/:id",
 controller.edit)

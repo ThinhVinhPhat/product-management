@@ -114,5 +114,9 @@ font-weight: 600;
     color: blue;
 }
 
+.inner-imgae img {
+    width: 15vw;
+}
+
 
 /* END Product */
