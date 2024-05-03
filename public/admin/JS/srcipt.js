@@ -185,3 +185,37 @@ if(tableEL){
 
 }
 
+// tạo chức năng sort sản phẩm
+const sort = document.querySelector("[sort-select]")
+const sort_clear_button = document.querySelector("[sort-clear]")
+const url = new URL(document.location.href)
+
+
+sort.addEventListener("change",(e)=>{
+    e.preventDefault()
+const current_choice = sort.value.split("-");
+    if(current_choice) {
+        url.searchParams.set("sort",current_choice[0])
+        url.searchParams.set("position",current_choice[1])
+
+    }
+    else{
+        url.searchParams.delete("sort")
+        url.searchParams.delete("position")
+    }
+    window.location.href = url
+})
+
+// xóa sort
+sort_clear_button.addEventListener("click",()=>{
+    url.searchParams.set("sort","position")
+    url.searchParams.set("position","desc")
+    window.location.href = url
+})
+// lấy ra tiêu đề đang sort
+const sort_val =  url.searchParams.get("sort")
+const postion_val = url.searchParams.get("position")
+
+const sort_String = sort_val + "-" + postion_val;
+const selectedSort = sort.querySelector(`option[value=${sort_String}]`)
+    selectedSort.selected = true

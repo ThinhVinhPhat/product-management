@@ -27,6 +27,7 @@ controller.edit)
 
 route.patch("/edit/:id"
 ,upload.single('thumbnail'),
+Cloudinary_upload.upload,
 validate.createPost,
 controller.editPatch)
 

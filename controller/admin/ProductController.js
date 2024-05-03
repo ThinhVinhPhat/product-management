@@ -48,8 +48,18 @@ module.exports.product = async (req, res) => {
     )
 
 
+    // chức năng sort
+    const sort = {}
+    if(req.query.sort  && req.query.position) {
+        sort[req.query.sort] = req.query.position
+    }
+    else{
+        sort[req.query.sort] = "desc"
+
+    }
+
     const products = await Product.find(
-        find).limit(4).skip(pagination.skip)
+        find).sort(sort).limit(4).skip(pagination.skip)
 
 
     res.render("admin/pages/product/index", {
@@ -59,6 +69,7 @@ module.exports.product = async (req, res) => {
         keyword: findObject.keyword,
         pagination: pagination
     })
+
 }
 
 

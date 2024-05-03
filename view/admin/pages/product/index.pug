@@ -32,6 +32,25 @@ block main
                 .col-8
                     a(href="/admin/product/create"
                     class="btn btn-outline-success") + Thêm mới
+                .col-8 
+                    div(sort class="d-flex")
+                        select(
+                        name="sort"
+                        class="form-control"
+                        sort-select
+                        )
+                          
+                            option(value="position-desc") Vị trí giảm dần
+                            option(value="position-asc") Vị trí tăng dần
+                            option(value="price-desc") Giá giảm dần
+                            option(value="price-asc") Giá tăng dần
+                            option(value="title-asc") Tiêu đề A - Z
+                            option(value="title-desc") Tiêu đề Z - A
+
+                        button(
+                        class="btn btn-danger mt-2 m-2"
+                        sort-clear
+                        ) Clear
             .row
                 table(
                     class="table table-hover table-sm"
