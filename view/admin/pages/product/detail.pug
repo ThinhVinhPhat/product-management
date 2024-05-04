@@ -10,7 +10,7 @@ block main
         div(class="mb-4") Tên sản phẩm: <b>#{product.title}</b>
 
     if(product.description)
-        div(class="mb-4") Mô tả: <b>#{product.description}</b>
+        div(class="mb-4") Mô tả: <b>!{product.description}</b>
     if(product.price)
         div(class="mb-4") Giá: <b>#{product.price}$</b>
     if(product.discountPercentage)
