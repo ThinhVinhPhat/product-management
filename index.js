@@ -25,6 +25,7 @@ app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: false }))
 
 //flash
+app.use(bodyParser.json());
 app.use(cookieparser('keyboard cat'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());

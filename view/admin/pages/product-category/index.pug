@@ -4,13 +4,15 @@ include ../../mixins/findbar.pug
 include ../../mixins/pagination.pug
 include ../../mixins/change_multi.pug
 include ../../mixins/alert.pug
-
+include ../../mixins/table-tree.pug
 
 block title
     title title
 
 
 block main
+    +alert-danger(5000)
+
     h1  Danh mục sản phẩm
     .card.mb-3 
         .card-header Danh sách
@@ -29,8 +31,6 @@ block main
                           
                             option(value="position-desc") Vị trí giảm dần
                             option(value="position-asc") Vị trí tăng dần
-                            option(value="price-desc") Giá giảm dần
-                            option(value="price-asc") Giá tăng dần
                             option(value="title-asc") Tiêu đề A - Z
                             option(value="title-desc") Tiêu đề Z - A
 
@@ -51,55 +51,16 @@ block main
                             th STT 
                             th Hình ảnh
                             th Tiêu đề
-                            th Giá
+                            th Danh mục cha
                             th Vị trí 
                             th Trạng Thái
                             th Hành Động
                         
 
                     tbody 
-                        each item in records
+                       +table-tree(records)
                            
-                            tr 
-                                td 
-                                    input(type="checkbox" name="id" value=item.id)
-                                td #{item.position}
-                                td 
-                                    img(src=item.thumbnail  alt=item.title width="100px" height="auto")
-                                td(style="margin: 10px") #{item.title}
-                                td(style="margin: 10px") #{item.price}$
-                                td  
-                                    input(type="number"
-                                    value = item.position
-                                    style= "width:60px"
-                                    min= "1"
-                                    name = "postion"
-                                    )
-                                td 
-                                    if(item.status == "active")
-                                        a(href="javascript:;" class="badge badge-success" style="background-color:green; text-decoration: none; margin-top: 15px;"
-                                        pro_status = item.status
-                                        pro_id = item.id
-                                        button-change-status
-                                        ) Hoạt Động
-                                    else
-                                        a(href="javascript:;" class="badge badge-danger" style="background-color:red; text-decoration: none; margin-top: 15px;"
-                                        pro_status = item.status
-                                        pro_id = item.id
-                                        button-change-status
-                                        ) Dừng Hoạt Động
-                                td 
-                                    a(
-
-                                        href=`/admin/product/detail/${item.id}`
-                                        class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
-                                    a(
-
-                                        href=`/admin/product/edit/${item.id}`
-                                        class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
-                                    button(class="btn btn-danger btn-sm ml-1"
-                                        pro_id= item.id
-                                        delete_buttons) Xóa
+                         
                         
     +pagination(pagination)
     form(action="", 
@@ -109,7 +70,7 @@ block main
 
     form(action="", 
     method="POST",
-    product-path="/admin/product/delete"
+    product-path="/admin/product-category/delete"
     id="form-delete")
 
     script(src="/admin/JS/product.js") 

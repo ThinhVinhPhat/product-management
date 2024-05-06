@@ -10,10 +10,22 @@ route.get("/",product_category.product)
 
 route.get("/create",product_category.create)
 
+
+route.delete("/delete/:id",product_category.delete)
+
 route.post("/create",upload.single('thumbnail'),
 Cloudinary_upload.upload,
 validate.createPost,
 product_category.createPost)
+
+
+route.get("/edit/:id",product_category.edit)
+
+
+route.patch("/edit/:id",upload.single('thumbnail'),
+Cloudinary_upload.upload,
+validate.createPost,
+product_category.editPatch)
 
 
 module.exports = route

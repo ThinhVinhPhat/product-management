@@ -2,7 +2,7 @@ const Product_category = require("../../model/product.category.model")
 const filterStatuHelper = require("../../helper/filterStatus")
 const findHelper = require("../../helper/find")
 const paginationhelper = require("../../helper/pagination")
-
+const createTree = require("../../helper/createTree")
 // moudle display sản phẩm 
 module.exports.product = async (req, res) => {
     const find = {
@@ -35,6 +35,9 @@ module.exports.product = async (req, res) => {
 
     // thanh chuyển trang
     const countProduct = await Product_category.countDocuments(find)
+
+    
+
     const pagination = paginationhelper(
         {
             currentPage: 1,
@@ -58,10 +61,11 @@ module.exports.product = async (req, res) => {
     const records = await Product_category.find(
         find).sort(sort).limit(4).skip(pagination.skip)
 
+    const sorted_categories = createTree.tree(records)
 
         res.render("admin/pages/product-category/index", {
         title: "Danh mục Sản Phẩm",
-        records: records,
+        records: sorted_categories,
         filterStatus: filterStatus,
         keyword: findObject.keyword,
         pagination: pagination
@@ -74,8 +78,19 @@ module.exports.product = async (req, res) => {
 // moudle tạo mới danh mục sản phẩm
 module.exports.create = async (req, res) => {
 
+    const find = {
+        deleted: false
+    }
+
+    
+    const categories = await Product_category.find(find);
+
+    const sorted_categories = createTree.tree(categories)
+
+
     res.render("admin/pages/product-category/create", {
-        title: "Tạo mới danh mục sản phẩm"
+        title: "Tạo mới danh mục sản phẩm",
+        categories: sorted_categories
     })
   
 }
@@ -91,9 +106,61 @@ module.exports.createPost = async (req,res) =>{
         req.body.position = parseInt(req.body.position);
     }
 
+
     const product_category = new Product_category(req.body);
     await product_category.save()
 
-/
     res.redirect("/admin/product-category")
+}
+
+
+
+/// hàm cho phép xóa tạm thời một sản phẩm 
+module.exports.delete = async (req,res) =>{
+    const id  = req.params.id
+
+    await Product_category.deleteOne({_id: id})
+    req.flash("delete", "Xóa thành công");
+    res.redirect("back")
+}
+
+
+
+// hàm cho phép chỉnh sửa danh mục sản phẩm
+module.exports.edit = async(req,res)=>{
+    try{
+
+        const id = req.params.id
+       
+        const category = await Product_category.findOne({
+            _id: id,
+            deleted: false
+        })
+    
+        const categories = await Product_category.find({
+            deleted: false
+        });
+    
+        const sorted_categories = createTree.tree(categories)
+    
+      
+        res.render("admin/pages/product-category/edit", {
+            title: "Chỉnh sửa danh mục sản phẩm",
+            category: category,
+            categories: sorted_categories
+        })
+    }
+    catch(error) {
+        res.redirect("/admin/product-category")
+    }
+}
+
+module.exports.editPatch = async(req,res)=>{
+    const id = req.params.id
+
+    req.body.position = parseInt(req.body.position)
+
+    await Product_category.updateOne({_id: id},req.body)
+
+    res.redirect("back")
 }
