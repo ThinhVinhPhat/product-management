@@ -1,0 +1,42 @@
+extends ../../layout/default.pug
+include ../../mixins/create_tree.pug
+include ../../mixins/alert.pug
+block title 
+    title  title
+
+block main 
+    +alert-danger(5000)
+
+    h1(class= "mb-4") Thêm mới nhóm quyền
+
+
+    form(action="/admin/roles/create"
+    id="create-form"
+    method= "POST"
+    enctype="multipart/form-data"
+    ) 
+ 
+        div(class="form-group mb-3")
+            label(for="title" class="fw-bold") Tiêu đề
+            input(
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                )
+
+        div(class="form-group mb-3")
+            label(for="dsc" class="fw-bold") Mô tả
+            input( 
+                type="text"
+                class="form-control"
+                id="dsc"
+                name="description"  
+                    )
+
+
+        div(class="form-group mb-3")
+        button(type="submit"
+        class="btn btn-primary") Tạo mới
+
+    script(src="/admin/JS/product.js") 

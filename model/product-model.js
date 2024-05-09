@@ -4,6 +4,11 @@ mongoose.plugin(slug);
 const productSchema = new mongoose.Schema({
     title: String,
 
+    danhmuccha_id: {
+        type: String,
+        default: ""
+    },
+
     description : String,
 
    

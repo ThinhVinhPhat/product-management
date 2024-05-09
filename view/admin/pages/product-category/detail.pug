@@ -1,0 +1,26 @@
+extends ../../layout/default.pug
+
+block title 
+    title title 
+
+block main 
+    h1(class= "mb-4") Chi tiết sản phẩm
+
+    if(product.title)
+        div(class="mb-4") Tên sản phẩm: <b>#{product.title}</b>
+
+    if(product.danhmuccha_id)
+        div(class="mb-4") Danh mục cha: <b>!{product.danhmuccha_id}</b>
+
+    if(product.description)
+        div(class="mb-4") Mô tả: <b>!{product.description}</b>
+   
+    if(product.thumbnail)
+        div(class="mb-4") Hình ảnh: 
+            img(src=product.thumbnail, alt="", style="width: 100px;")
+
+
+       
+    a(href=`/admin/product-category/edit/${product.id}`
+    class="btn btn-warning"
+    ) Chỉnh sửa 

@@ -4,6 +4,8 @@ const findHelper = require("../../helper/find")
 const paginationhelper = require("../../helper/pagination")
 const { default: mongoose } = require("mongoose")
 const validate = require("../../validate/tilte_create.validate")
+const Product_category = require("../../model/product.category.model")
+const createTree = require("../../helper/createTree")
 
 // moudle display sản phẩm 
 module.exports.product = async (req, res) => {
@@ -130,8 +132,17 @@ module.exports.delete = async (req, res) => {
 //hàm thêm mới một sản phẩm
 module.exports.create = async (req, res) => {
 
+    const find = {
+        deleted: false
+    }
+
+    const categories = await Product_category.find(find)
+
+    const sorted_categories = createTree.tree(categories)
+
     res.render("admin/pages/product/create", {
-        title: "Thêm mới Sản Phẩm"
+        title: "Thêm mới Sản Phẩm",
+        categories: sorted_categories
     })
 }
 
@@ -178,10 +189,18 @@ module.exports.edit = async (req, res) => {
 
         const product = await Product.findOne(find);
 
+            
+        const categories = await Product_category.find({
+            deleted: false
+        });
+    
+        const sorted_categories = createTree.tree(categories)
+    
 
         res.render("admin/pages/product/edit", {
             title: "Chỉnh sửa sản phẩm",
-            product: product
+            product: product,
+            categories: sorted_categories
         })
     }
     catch {

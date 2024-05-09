@@ -1,5 +1,6 @@
 extends ../../layout/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/create_tree.pug
 block title 
     title  title
 
@@ -23,6 +24,15 @@ block main
                 id="title"
                 name="title"
                 )
+
+        div(class="form-group mb-3")
+            label(for="danhmuccha_id" class="tw-bold") Danh mục cha
+            select(class="form-control" name="danhmuccha_id" id="danhmuccha_id")
+                option(value="" ) -- Chọn danh mục cha --
+                    if(categories)
+                        +create_tree(categories)
+
+        
 
         div(class="form-group")
             label(for="dsc") Mô tả
@@ -106,3 +116,4 @@ block main
         class="btn btn-primary") Tạo mới
 
     script(src="/admin/JS/product.js") 
+    

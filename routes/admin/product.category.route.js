@@ -28,4 +28,7 @@ validate.createPost,
 product_category.editPatch)
 
 
+route.get("/detail/:id",product_category.detail)
+
+
 module.exports = route

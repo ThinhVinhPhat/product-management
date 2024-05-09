@@ -109,7 +109,7 @@ module.exports.createPost = async (req,res) =>{
 
     const product_category = new Product_category(req.body);
     await product_category.save()
-
+    req.flash("create", "Tạo mới thành công");
     res.redirect("/admin/product-category")
 }
 
@@ -161,6 +161,27 @@ module.exports.editPatch = async(req,res)=>{
     req.body.position = parseInt(req.body.position)
 
     await Product_category.updateOne({_id: id},req.body)
-
+    req.flash("edit", "Tạo mới thành công");
     res.redirect("back")
+}
+
+
+
+
+// hàm cho phép xem thông tin của sản phẩm
+module.exports.detail = async (req,res)=>{
+    const id  = req.params.id
+
+    const find = {
+        deleted: false,
+        _id: id
+    }
+
+    const category = await Product_category.findOne(find)
+
+    res.render("admin/pages/product-category/detail",{
+        title: "Thông tin danh mục sản phẩm",
+        product: category
+    })
+
 }

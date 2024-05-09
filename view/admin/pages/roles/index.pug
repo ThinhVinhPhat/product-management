@@ -1,0 +1,57 @@
+extends ../../layout/default.pug
+
+block title
+    title title
+
+
+block main
+
+
+    h1  Nhóm quyền
+    .card.mb-3 
+        .card-header Danh sách
+        .card-body
+            .row
+                .col-8
+                    a(href="/admin/roles/create"
+                    class="btn btn-outline-success") + Thêm mới
+                .row
+                table(
+                    class="table table-hover table-sm"
+                    checkbox-multi
+                )
+                
+                    thead 
+                        tr 
+                            th 
+                                input(type="checkbox" name="checkall")
+                       
+                            th Tiêu đề
+                            th Mô tả
+                            th Thao tác
+                    
+                        
+
+                    tbody 
+                        if(records.length >0)
+                            each item,index in records
+                                tr 
+                                    td #{index+1}
+                            
+                                    td(style="margin: 10px") #{item.title}
+
+
+                                    td(style="margin: 10px") #{item.description}
+
+                                    td 
+                                        a(
+
+                                            href=`/admin/roles/detail/${item.id}`
+                                            class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
+                                        a(
+
+                                            href=`/admin/roles/edit/${item.id}`
+                                            class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
+                                        button(class="btn btn-danger btn-sm ml-1"
+                                            pro_id= item.id
+                                            delete_buttons) Xóa
