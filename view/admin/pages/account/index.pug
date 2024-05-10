@@ -1,0 +1,94 @@
+extends ../../layout/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/alert.pug
+block title
+    title title
+
+
+block main
+    +alert-danger(5000)
+    +alert-success(5000)
+
+    h1 Tài khoản
+    .card.mb-3 
+        .card-header Danh sách
+        .card-body
+            .row
+                .col-8
+                    a(href="/admin/account/create"
+                    class="btn btn-outline-success") + Thêm mới
+                .row
+                table(
+                    class="table table-hover table-sm"
+                    checkbox-multi
+                )
+                
+                    thead 
+                        tr 
+                            th 
+                                input(type="checkbox" name="checkall")
+                       
+                            th Ảnh đại diện
+                            th Họ tên
+                            th Email
+                            th Nhóm Quyền
+                            th Trạng thái
+                            th Thao tác
+                    
+                        
+
+                    tbody 
+                        if(records.length >0)
+                            each item,index in records
+                                tr 
+                                    td #{index+1}
+                            
+                                    td(style="margin: 10px")
+                                        img(src=item.avatar, alt="" style="width: 100px; border-radius: 5px;")
+
+
+                                    td(style="margin: 10px") #{item.fullname}
+
+
+                                    td(style="margin: 10px") #{item.email}
+
+                                    td(style="margin: 10px") #{item.role.title}
+
+                                    td(style="margin: 10px")
+                                        if(item.status == "active")
+                                            a(href="javascript:;" class="badge badge-success" style="background-color:green; text-decoration: none; margin-top: 15px;"
+                                            pro_status = item.status
+                                            pro_id = item.id
+                                            button-change-status
+                                            ) Hoạt Động
+                                        else
+                                            a(href="javascript:;" class="badge badge-danger" style="background-color:red; text-decoration: none; margin-top: 15px;"
+                                            pro_status = item.status
+                                            pro_id = item.id
+                                            button-change-status
+                                            ) Dừng Hoạt Động
+
+                                    td 
+                                        a(
+
+                                            href=`/admin/account/detail/${item.id}`
+                                            class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
+                                        a(
+
+                                            href=`/admin/account/edit/${item.id}`
+                                            class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
+                                        button(class="btn btn-danger btn-sm ml-1"
+                                            pro_id= item.id
+                                            delete_buttons) Xóa
+
+    form(action="", 
+    method="POST",
+    product-path="/admin/account/change-status"
+    id="form-change-status")
+
+    form(action="", 
+    method="POST",
+    product-path="/admin/account/delete"
+    id="form-delete")
+
+    script(src="/admin/JS/product.js") 

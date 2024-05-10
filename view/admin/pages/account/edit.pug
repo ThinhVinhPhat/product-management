@@ -1,0 +1,106 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/create_tree.pug
+block title 
+    title  title
+
+block main 
+    +alert-danger(5000)
+    +alert-success(5000)
+
+    h1(class= "mb-4") Cập nhật tài khoản
+
+
+    form(action=`/admin/account/edit/${account.id}?_method=PATCH`
+    method= "POST"
+    enctype="multipart/form-data"
+    ) 
+
+        div(class="form-group")
+            label(for="fullname" class="tw-bold") Họ tên
+            input(
+                type="text"
+                class="form-control"
+                id="fullname"
+                name="fullname"
+                value= account.fullname
+                )
+        
+        div(class="form-group")
+            label(for="email" class="tw-bold") Email
+            input(
+                type="text"
+                class="form-control"
+                id="email"
+                name="email"
+                value= account.email
+                )
+        
+        div(class="form-group")
+            label(for="password" class="tw-bold") Mật khẩu
+            input(
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                value= account.password
+                )
+
+        div(class="form-group")
+            label(for="phone" class="tw-bold") Số điện thoại
+            input(
+            type="text"
+            class="form-control"
+            id="phone"
+            name="phone"
+            value= account.phone
+            )
+
+            
+        div(class="form-group"  style="margin: 15px;" upload-image)
+            label(for="avatar" style="margin-right: 15px;") Ảnh đại diện
+            input(type="file"
+            id="avatar"
+            class="form-control-file"
+            name="avatar"
+            accept="image/*"
+            upload-image-input
+            )
+
+            img(src= account.avatar
+            upload-image-preview 
+            class="upload-img-preview")
+
+        
+       
+        div(class="form-group mb-3")
+            label(for="role_id" class="tw-bold") Phân quyền
+            select(class="form-control" name="role_id" id="role_id")
+                option(value="" ) -- Chọn phân quyền --
+                    if(roles)
+                        each item in roles 
+                            option(value= item.id selected = (item.id === account.role_id ? true : false)) #{item.title} 
+        
+        div(class="form-group form-check form-check-inline")
+            input(type="radio"
+        class="form-check-input"
+        id="statusActive"
+        name="status"
+        value="active"
+        checked = (account.status === "active" ? true : false))
+            label(for="statusActive" class="form-check-label") Hoạt động
+            
+        div(class="form-group form-check form-check-inline")
+            input(type="radio"
+        class="form-check-input"
+        id="statusInactive"
+        name="status"
+        value="inactive"
+        checked = (account.status === "inactive" ? true : false))
+            label(for="statusInactive" class="form-check-label") Dừng Hoạt động
+        
+        div(class="form-group m-3")
+        button(class="btn btn-primary" type="submit") Cập nhật
+
+    
+    script(src="/admin/JS/product.js") 

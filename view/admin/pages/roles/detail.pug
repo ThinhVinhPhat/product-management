@@ -1,0 +1,17 @@
+extends ../../layout/default.pug
+
+block title 
+    title title 
+
+block main 
+    h1(class= "mb-4") Chi tiết Nhóm quyền
+
+    if(role.title)
+        div(class="mb-4") Tên Nhóm quyền: <b>#{role.title}</b>
+
+    if(role.description)
+        div(class="mb-4") Mô tả: <b>!{role.description}</b>
+      
+    a(href=`/admin/roles/edit/${role.id}`
+    class="btn btn-warning"
+    ) Chỉnh sửa 

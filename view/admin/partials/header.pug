@@ -1,9 +1,11 @@
 header.header
     .container-fluid
-        .row-align-items-center 
+        .row-align-items-center.d-flex
             .col-3 
                 .inner-logo 
                     a(href="/admin/dashbroad") ADMIN 
 
-            .col-9 
+            .col-9.mt-3.d-flex.justify-content-end
+                .exit-button
+                    a(class="btn btn-danger" href="/admin/auth/logout") Đăng xuất
     

@@ -17,11 +17,14 @@ route.patch("/edit/:id",rolesController.editPost)
 route.post("/create",rolesController.createPost)
 
 
+route.get("/detail/:id",rolesController.detail);
 
 route.get("/permission",rolesController.permission);
 
 
 route.patch("/permission",rolesController.permissionPatch);
+
+route.delete("/delete/:id",rolesController.delete);
 
 
 

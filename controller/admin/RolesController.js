@@ -35,7 +35,7 @@ module.exports.createPost = async (req,res)=>{
     console.log(req.body)
     await role.save()
 
-    res.send("OK")
+    res.redirect("back")
 }
 
 
@@ -93,4 +93,33 @@ module.exports.permissionPatch = async (req,res) =>{
 
     req.flash("success","Cập nhật quyền thành công")
     res.redirect("back")
+}
+
+
+module.exports.delete = async (req,res) =>{
+    const id  = req.params.id
+
+    await Roles.deleteOne({_id: id})
+a
+
+    req.flash("success","Xóa thành công")
+    res.redirect("back")
+}
+
+module.exports.detail = async (req,res) =>{
+    const id = req.params.id
+
+
+    const find = {
+        deleted: false,
+        _id: id
+    }
+    
+    const role = await Roles.findOne(find)
+
+    res.render("admin/pages/roles/detail",{
+        title: "Chi tiết nhóm quyền",
+        role: role
+    })
+
 }

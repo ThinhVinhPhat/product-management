@@ -1,11 +1,13 @@
 extends ../../layout/default.pug
-
+include ../../mixins/pagination.pug
+include ../../mixins/alert.pug
 block title
     title title
 
 
 block main
-
+    +alert-danger(5000)
+    +alert-success(5000)
 
     h1  Nhóm quyền
     .card.mb-3 
@@ -55,3 +57,15 @@ block main
                                         button(class="btn btn-danger btn-sm ml-1"
                                             pro_id= item.id
                                             delete_buttons) Xóa
+
+    form(action="", 
+    method="POST",
+    product-path="/admin/roles/change-status"
+    id="form-change-status")
+
+    form(action="", 
+    method="POST",
+    product-path="/admin/roles/delete"
+    id="form-delete")
+
+    script(src="/admin/JS/product.js") 
