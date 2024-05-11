@@ -1,6 +1,9 @@
 var md5 = require('md5');
 const Account = require("../../model/account.model")
 const Role = require("../../model/roles.model")
+const filterStatuHelper = require("../../helper/filterStatus")
+const findHelper = require("../../helper/find")
+const paginationhelper = require("../../helper/pagination")
 
 // module cho phép chuyển đổi status
 module.exports.changestatus = async(req,res) =>{
@@ -19,8 +22,55 @@ module.exports.index = async (req, res) => {
     const find = {
         deleted: false
     }
+     // thanh lọc sản phẩm
+     const filterStatus = filterStatuHelper(req.query);
 
-    const records = await Account.find(find).select("-password -token")
+     if (req.query.status) {
+         find.status = req.query.status
+     }
+     // kết thúc lọc
+ 
+ 
+ 
+     // thanh tìm kiếm
+     const findObject = findHelper(req.query);
+ 
+     if (findObject.keyword) {
+         const regex_keyword = new RegExp(findObject.keyword, "i")
+         find.title = regex_keyword;
+         req.flash("find", "Đã tìm thấy");
+     }
+     // kết thúc tìm kiếm
+ 
+ 
+ 
+ 
+     // thanh chuyển trang
+     const countProduct = await Account.countDocuments(find)
+     const pagination = paginationhelper(
+         {
+             currentPage: 1,
+             limitofProduct: 4,
+         },
+         req.query,
+         countProduct
+     )
+ 
+ 
+     // chức năng sort
+     const sort = {}
+     if(req.query.sort  && req.query.position) {
+         sort[req.query.sort] = req.query.position
+     }
+     else{
+         sort[req.query.sort] = "desc"
+ 
+     }
+ 
+
+    const records = await Account.find(
+        find).sort(sort).limit(4).skip(pagination.skip).select("-password -token")
+
     for(const record of records){
         const role = await Role.findOne({
             _id: record.role_id,
@@ -34,7 +84,10 @@ module.exports.index = async (req, res) => {
 
     res.render("admin/pages/account/index", {
         title: "Tài khoản",
-        records: records
+        records: records,
+        pagination: pagination,
+        filterStatus: filterStatus,
+        keyword: findObject.keyword
     })
 }
 

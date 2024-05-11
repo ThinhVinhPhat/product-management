@@ -11,66 +11,77 @@ block title
 
 
 block main
-    +alert-danger(5000)
+    if(role.permission.includes("products-category_view"))
+        +alert-danger(5000)
 
-    h1  Danh mục sản phẩm
-    .card.mb-3 
-        .card-header Danh sách
-        .card-body
-            .row
-                .col-8
-                    a(href="/admin/product-category/create"
-                    class="btn btn-outline-success") + Thêm mới
-                .col-8 
-                    div(sort class="d-flex")
-                        select(
-                        name="sort"
-                        class="form-control"
-                        sort-select
-                        )
-                          
-                            option(value="position-desc") Vị trí giảm dần
-                            option(value="position-asc") Vị trí tăng dần
-                            option(value="title-asc") Tiêu đề A - Z
-                            option(value="title-desc") Tiêu đề Z - A
-
-                        button(
-                        class="btn btn-danger mt-2 m-2"
-                        sort-clear
-                        ) Clear
+        h1  Danh mục sản phẩm
+        .card.mb-3 
+            .card-header Bộ lọc và tìm kiếm
+            .card-body
                 .row
-                table(
-                    class="table table-hover table-sm"
-                    checkbox-multi
-                )
-                
-                    thead 
-                        tr 
-                            th 
-                                input(type="checkbox" name="checkall")
-                            th STT 
-                            th Hình ảnh
-                            th Tiêu đề
-                            th Danh mục cha
-                            th Vị trí 
-                            th Trạng Thái
-                            th Hành Động
-                        
+                    .col-6  
+                        +filterStatus(filterStatus)
+                    .col-6 
+                        +find(keyword)
+        .card.mb-3 
+            .card-header Danh sách
+            .card-body
+                .row
+                    .col-8
+                        if(role.permission.includes("products-category_create"))
+                            a(href="/admin/product-category/create"
+                            class="btn btn-outline-success") + Thêm mới
+                    .col-8 
+                        div(sort class="d-flex")
+                            select(
+                            name="sort"
+                            class="form-control"
+                            sort-select
+                            )
+                            
+                                option(value="position-desc") Vị trí giảm dần
+                                option(value="position-asc") Vị trí tăng dần
+                                option(value="title-asc") Tiêu đề A - Z
+                                option(value="title-desc") Tiêu đề Z - A
 
-                    tbody 
-                       +table-tree(records)
-                           
-                         
-                        
-    +pagination(pagination)
-    form(action="", 
-    method="POST",
-    product-path="/admin/product/change-status"
-    id="form-change-status")
+                            button(
+                            class="btn btn-danger mt-2 m-2"
+                            sort-clear
+                            ) Clear
+                    .row
+                    table(
+                        class="table table-hover table-sm"
+                        checkbox-multi
+                    )
+                    
+                        thead 
+                            tr 
+                                th 
+                                    input(type="checkbox" name="checkall")
+                                th STT 
+                                th Hình ảnh
+                                th Tiêu đề
+                                th Danh mục cha
+                                th Vị trí 
+                                th Hành Động
+                            
 
-    form(action="", 
-    method="POST",
-    product-path="/admin/product-category/delete"
-    id="form-delete")
+                        tbody 
+                        +table-tree(records)
+                            
+                            
+                            
+        +pagination(pagination)
+        form(action="", 
+        method="POST",
+        product-path="/admin/product-category/change-status"
+        id="form-change-status")
 
-    script(src="/admin/JS/product.js") 
+        form(action="", 
+        method="POST",
+        product-path="/admin/product-category/delete"
+        id="form-delete")
+
+        script(src="/admin/JS/product.js")
+    else 
+        h1 Bạn không có quyền sử dụng chức năng này

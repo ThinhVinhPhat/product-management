@@ -1,3 +1,4 @@
+
 mixin table-tree(arr , level=1)
     each item in arr 
         - const prefix = Array(level+1).join("--")
@@ -16,30 +17,20 @@ mixin table-tree(arr , level=1)
                     min= "1"
                     name = "postion"
                     )
-                td 
-                    if(item.status == "active")
-                        a(href="javascript:;" class="badge badge-success" style="background-color:green; text-decoration: none; margin-top: 15px;"
-                        pro_status = item.status
-                        pro_id = item.id
-                        button-change-status
-                        ) Hoạt Động
-                    else
-                        a(href="javascript:;" class="badge badge-danger" style="background-color:red; text-decoration: none; margin-top: 15px;"
-                        pro_status = item.status
-                        pro_id = item.id
-                        button-change-status
-                        ) Dừng Hoạt Động
-                td 
+                td
+                 
                     a(
 
                         href=`/admin/product-category/detail/${item.id}`
                         class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
-                    a(
+                    if(role.permission.includes("products-category_edit"))
+                        a(
 
-                        href=`/admin/product-category/edit/${item.id}`
-                        class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
-                    button(class="btn btn-danger btn-sm ml-1"
-                        pro_id= item.id
-                        delete_buttons) Xóa
+                            href=`/admin/product-category/edit/${item.id}`
+                            class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
+                    if(role.permission.includes("products-category_delete"))
+                        button(class="btn btn-danger btn-sm ml-1"
+                            pro_id= item.id
+                            delete_buttons) Xóa
         if item.children && item.children.length >0
             +table-tree(item.children,level+1)

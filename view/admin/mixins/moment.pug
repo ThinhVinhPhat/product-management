@@ -1,0 +1,8 @@
+mixin formateDateTime(item)
+    #{moment(item).format('MMMM Do YYYY, h:mm:ss a')}
+
+mixin formateDate(item)
+    #{moment(item).format('MMMM Do YYYY')}
+
+mixin formateTime(item)
+    #{moment(item).format('h:mm:ss a')}

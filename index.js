@@ -12,9 +12,11 @@ const PATH_ADMIN = require("./config/system")
 const flash  = require('express-flash')
 var cookieparser = require("cookie-parser");
 var session = require('express-session')
+var moment  = require("moment")
 
 // Local Path
 app.locals.prefix_admin = PATH_ADMIN.prefix_admin;
+app.locals.moment = moment
 
 // set template
 app.set("views",`${__dirname}/view`)

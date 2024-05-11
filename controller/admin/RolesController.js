@@ -1,5 +1,7 @@
 const Roles = require("../../model/roles.model")
-
+const filterStatuHelper = require("../../helper/filterStatus")
+const findHelper = require("../../helper/find")
+const paginationhelper = require("../../helper/pagination")
 
 
 module.exports.index = async (req,res)=>{
@@ -8,12 +10,61 @@ module.exports.index = async (req,res)=>{
         deleted: false
     }
 
+    // thanh lọc sản phẩm
+    const filterStatus = filterStatuHelper(req.query);
 
-    const records = await Roles.find(find)
+    if (req.query.status) {
+        find.status = req.query.status
+    }
+    // kết thúc lọc
+
+
+
+    // thanh tìm kiếm
+    const findObject = findHelper(req.query);
+
+    if (findObject.keyword) {
+        const regex_keyword = new RegExp(findObject.keyword, "i")
+        find.title = regex_keyword;
+        req.flash("find", "Đã tìm thấy");
+    }
+    // kết thúc tìm kiếm
+
+
+
+
+    // thanh chuyển trang
+    const countProduct = await Roles.countDocuments(find)
+    const pagination = paginationhelper(
+        {
+            currentPage: 1,
+            limitofProduct: 4,
+        },
+        req.query,
+        countProduct
+    )
+
+
+    // chức năng sort
+    const sort = {}
+    if(req.query.sort  && req.query.position) {
+        sort[req.query.sort] = req.query.position
+    }
+    else{
+        sort[req.query.sort] = "desc"
+
+    }
+
+
+   const records = await Roles.find(
+       find).sort(sort).limit(4).skip(pagination.skip)
 
     res.render("admin/pages/roles/index",{
         title: "Trang nhóm quyền",
-        records: records
+        records: records,
+        pagination: pagination,
+        filterStatus: filterStatus,
+        keyword: findObject.keyword
     })
 }
 

@@ -68,8 +68,7 @@ permission.forEach((item,index) =>{
 const check_all = document.querySelectorAll("[select-all]")
 
 check_all.forEach((check,index)=>{
-    const check_button  = check.querySelector("input")  
-
+    const check_button  = check.querySelector(".check_all")  
     check_button.addEventListener("change",()=>{
         const rows = document.querySelectorAll(`[data-name]`)
        rows.forEach(row =>{
@@ -78,5 +77,5 @@ check_all.forEach((check,index)=>{
       input.checked = true
        } )
     })
-
+    
 })

@@ -6,7 +6,7 @@ const { default: mongoose } = require("mongoose")
 const validate = require("../../validate/tilte_create.validate")
 const Product_category = require("../../model/product.category.model")
 const createTree = require("../../helper/createTree")
-
+const Account = require("../../model/account.model")
 // moudle display sản phẩm 
 module.exports.product = async (req, res) => {
 
@@ -62,6 +62,16 @@ module.exports.product = async (req, res) => {
 
     const products = await Product.find(
         find).sort(sort).limit(4).skip(pagination.skip)
+
+    for(const product of products){
+        const user = await Account.findOne({
+            _id: product.createdBy.account_id,
+            deleted: false
+        })
+        if(user){
+            product.user_name = user.fullname
+        }
+    }
 
 
     res.render("admin/pages/product/index", {
@@ -131,10 +141,12 @@ module.exports.delete = async (req, res) => {
 
 //hàm thêm mới một sản phẩm
 module.exports.create = async (req, res) => {
+   
 
     const find = {
         deleted: false
     }
+
 
     const categories = await Product_category.find(find)
 
@@ -147,7 +159,6 @@ module.exports.create = async (req, res) => {
 }
 
 module.exports.createPost = async (req, res) => {
-    
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
     req.body.stock = parseInt(req.body.stock)
@@ -159,6 +170,11 @@ module.exports.createPost = async (req, res) => {
     }
     else {
         req.body.position = parseInt(req.body.position);
+    }
+
+    req.body.createdBy = {
+        account_id: res.locals.user.id,
+        createdAt: Date.now()
     }
 
     const product = new Product(req.body);

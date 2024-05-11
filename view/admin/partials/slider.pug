@@ -3,32 +3,34 @@
         ul 
             li 
                 a(href="/admin/dashbroad") Tổng Quan 
-
-            li(style= " border-bottom: 2px solid #8b2121;") 
-                h6(class="text-info mt-5" ) SẢN PHẨM
+            if(role.permission.includes("product_view"))
+                li(style= " border-bottom: 2px solid #8b2121;") 
+                    h6(class="text-info mt-5" ) SẢN PHẨM
             
-            li 
-                a(href="/admin/product") Sản Phẩm
+                li 
+                    a(href="/admin/product") Sản Phẩm
+                
+            if(role.permission.includes("products-category_view"))
+                li 
+                    a(href="/admin/product-category") Danh mục sản phẩm 
             
-            li 
-                a(href="/admin/product-category") Danh mục sản phẩm 
-            
-            li(style= " border-bottom: 2px solid #8b2121;") 
-                h6(class="text-info mt-5" ) TÀI KHOẢN 
-            li 
-                a(href="/admin/account") Tài khoản 
+            if(role.permission.includes("account_view"))
+                li(style= " border-bottom: 2px solid #8b2121;") 
+                    h6(class="text-info mt-5" ) TÀI KHOẢN 
+                li 
+                    a(href="/admin/account") Tài khoản 
 
 
 
-
-            li(style= " border-bottom: 2px solid #8b2121;") 
-                h6(class="text-info mt-5" ) CÀI ĐẶT CHUNG
-            
-            li 
-                a(href="/admin/roles") Nhóm quyền
-            
-            li 
-                a(href="/admin/roles/permission") Phân quyền
-
-            li( style="position: absolute; bottom: -45%")
-                a(href="/admin/trashbin" ) Thùng Rác
+            if(role.permission.includes("roles_view"))
+                li(style= " border-bottom: 2px solid #8b2121;")     
+                    h6(class="text-info mt-5" ) CÀI ĐẶT CHUNG
+                
+                li 
+                    a(href="/admin/roles") Nhóm quyền
+                
+                li 
+                    a(href="/admin/roles/permission") Phân quyền
+            if(role.permission.includes("bin_view"))
+                li( style="position: absolute; ")
+                    a(href="/admin/trashbin" ) Thùng Rác

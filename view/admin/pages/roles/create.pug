@@ -4,38 +4,41 @@ include ../../mixins/alert.pug
 block title 
     title  title
 
-block main 
-    +alert-danger(5000)
+block main
+    if(role.permission.includes("roles_create"))
+        +alert-danger(5000)
 
-    h1(class= "mb-4") Thêm mới nhóm quyền
+        h1(class= "mb-4") Thêm mới nhóm quyền
 
 
-    form(action="/admin/roles/create"
-    id="create-form"
-    method= "POST"
-    ) 
- 
-        div(class="form-group mb-3")
-            label(for="title" class="fw-bold") Tiêu đề
-            input(
-                type="text"
-                class="form-control"
-                id="title"
-                name="title"
-                )
-
-        div(class="form-group mb-3")
-            label(for="dsc" class="fw-bold") Mô tả
-            input( 
-                type="text"
-                class="form-control"
-                id="dsc"
-                name="description"  
+        form(action="/admin/roles/create"
+        id="create-form"
+        method= "POST"
+        ) 
+    
+            div(class="form-group mb-3")
+                label(for="title" class="fw-bold") Tiêu đề
+                input(
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
                     )
 
+            div(class="form-group mb-3")
+                label(for="dsc" class="fw-bold") Mô tả
+                input( 
+                    type="text"
+                    class="form-control"
+                    id="dsc"
+                    name="description"  
+                        )
 
-        div(class="form-group mb-3")
-        button(type="submit"
-        class="btn btn-primary") Tạo mới
 
-    script(src="/admin/JS/product.js") 
+            div(class="form-group mb-3")
+            button(type="submit"
+            class="btn btn-primary") Tạo mới
+
+        script(src="/admin/JS/product.js")
+    else 
+        h1 Bạn không có quyền sử dụng chức năng này

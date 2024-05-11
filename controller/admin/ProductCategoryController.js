@@ -3,6 +3,20 @@ const filterStatuHelper = require("../../helper/filterStatus")
 const findHelper = require("../../helper/find")
 const paginationhelper = require("../../helper/pagination")
 const createTree = require("../../helper/createTree")
+
+// module cho phép chuyển đổi status
+module.exports.changestatus = async(req,res) =>{
+    const id = req.params.id
+    const status = req.params.status
+
+    req.flash("success", "Cập nhật trạng thái thành công");
+
+    await Product_category.updateOne({_id: id},{status: status})
+    res.redirect("back")
+    
+}
+
+
 // moudle display sản phẩm 
 module.exports.product = async (req, res) => {
     const find = {

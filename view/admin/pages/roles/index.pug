@@ -1,71 +1,111 @@
 extends ../../layout/default.pug
+include ../../mixins/filterstatus.pug
+include ../../mixins/findbar.pug
 include ../../mixins/pagination.pug
+include ../../mixins/change_multi.pug
 include ../../mixins/alert.pug
 block title
     title title
 
 
 block main
-    +alert-danger(5000)
-    +alert-success(5000)
+    if(role.permission.includes("roles_view"))
 
-    h1  Nhóm quyền
-    .card.mb-3 
-        .card-header Danh sách
-        .card-body
-            .row
-                .col-8
-                    a(href="/admin/roles/create"
-                    class="btn btn-outline-success") + Thêm mới
+        +alert-danger(5000)
+        +alert-success(5000)
+
+        h1  Nhóm quyền
+        .card.mb-3 
+            .card-header Bộ lọc và tìm kiếm
+            .card-body
                 .row
-                table(
-                    class="table table-hover table-sm"
-                    checkbox-multi
-                )
-                
-                    thead 
-                        tr 
-                            th 
-                                input(type="checkbox" name="checkall")
-                       
-                            th Tiêu đề
-                            th Mô tả
-                            th Thao tác
-                    
-                        
+                    .col-6  
+                        +filterStatus(filterStatus)
+                    .col-6 
+                        +find(keyword)
+        .card.mb-3 
+            .card-header Danh sách
+            .card-body
+                .row
+                    .col-8
+                        if(role.permission.includes("roles_create"))
 
-                    tbody 
-                        if(records.length >0)
-                            each item,index in records
-                                tr 
-                                    td #{index+1}
+                            a(href="/admin/roles/create"
+                            class="btn btn-outline-success") + Thêm mới
+                    .col-8 
+                        div(sort class="d-flex")
+                            select(
+                            name="sort"
+                            class="form-control"
+                            sort-select
+                            )
                             
-                                    td(style="margin: 10px") #{item.title}
+                                option(value="position-desc") Vị trí giảm dần
+                                option(value="position-asc") Vị trí tăng dần
+                                option(value="price-desc") Giá giảm dần
+                                option(value="price-asc") Giá tăng dần
+                                option(value="title-asc") Tiêu đề A - Z
+                                option(value="title-desc") Tiêu đề Z - A
+
+                            button(
+                            class="btn btn-danger mt-2 m-2"
+                            sort-clear
+                            ) Clear
+                    .row
+                    table(
+                        class="table table-hover table-sm"
+                        checkbox-multi
+                    )
+                    
+                        thead 
+                            tr 
+                                th 
+                                    input(type="checkbox" name="checkall")
+                        
+                                th Tiêu đề
+                                th Mô tả
+                                th Thao tác
+                        
+                            
+
+                        tbody 
+                            if(records.length >0)
+                                each item,index in records
+                                    tr 
+                                        td #{index+1}
+                                
+                                        td(style="margin: 10px") #{item.title}
 
 
-                                    td(style="margin: 10px") #{item.description}
+                                        td(style="margin: 10px") #{item.description}
 
-                                    td 
-                                        a(
+                                        td 
+                                            a(
 
-                                            href=`/admin/roles/detail/${item.id}`
-                                            class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
-                                        a(
+                                                href=`/admin/roles/detail/${item.id}`
+                                                class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
+                                            
+                                            if(role.permission.includes("roles_edit"))
+                                                a(
 
-                                            href=`/admin/roles/edit/${item.id}`
-                                            class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
-                                        button(class="btn btn-danger btn-sm ml-1"
-                                            pro_id= item.id
-                                            delete_buttons) Xóa
+                                                    href=`/admin/roles/edit/${item.id}`
+                                                    class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
+                                            if(role.permission.includes("roles_delete"))
 
-    form(action="", 
-    method="POST",
-    product-path="/admin/roles/change-status"
-    id="form-change-status")
+                                                button(class="btn btn-danger btn-sm ml-1"
+                                                    pro_id= item.id
+                                                    delete_buttons) Xóa
+        +pagination(pagination)
+        form(action="", 
+        method="POST",
+        product-path="/admin/roles/change-status"
+        id="form-change-status")
 
-    form(action="", 
-    method="POST",
-    product-path="/admin/roles/delete"
-    id="form-delete")
+        form(action="", 
+        method="POST",
+        product-path="/admin/roles/delete"
+        id="form-delete")
 
-    script(src="/admin/JS/product.js") 
+        script(src="/admin/JS/product.js")
+    else 
+        h1 Bạn không có quyền sử dụng chức năng này

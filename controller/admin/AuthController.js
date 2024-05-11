@@ -4,9 +4,16 @@ const Account = require("../../model/account.model")
 
 
 module.exports.login = async(req,res)=>{
-    res.render("admin/pages/auth/login",{
-        title: "Đăng nhập"
-    })
+    if(req.cookies.token){
+        res.redirect("/admin/dashbroad")
+    }
+    else{
+        
+            res.render("admin/pages/auth/login",{
+                title: "Đăng nhập"
+            })
+        
+    }
 }
 
 module.exports.logout = async(req,res)=>{

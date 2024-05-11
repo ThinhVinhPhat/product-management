@@ -30,5 +30,7 @@ product_category.editPatch)
 
 route.get("/detail/:id",product_category.detail)
 
+route.patch("/change-status/:id",product_category.detail)
+
 
 module.exports = route

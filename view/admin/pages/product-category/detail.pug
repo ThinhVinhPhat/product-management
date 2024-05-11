@@ -20,7 +20,7 @@ block main
             img(src=product.thumbnail, alt="", style="width: 100px;")
 
 
-       
-    a(href=`/admin/product-category/edit/${product.id}`
-    class="btn btn-warning"
-    ) Chỉnh sửa 
+    if(role.permission.includes("products-category_edit"))   
+        a(href=`/admin/product-category/edit/${product.id}`
+        class="btn btn-warning"
+        ) Chỉnh sửa 

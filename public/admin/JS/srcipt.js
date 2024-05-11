@@ -1,5 +1,4 @@
 // tạo query cho nút sort
-
 const sort_button = document.querySelectorAll("[button-status]")
 
 if(sort_button.length >0){
@@ -86,7 +85,6 @@ statusButtonEL.forEach(button =>{
        }       
        
        formEL.action = data_path + `/${changestatus}/${id}` + "?_method=PATCH"
-       
        formEL.submit()
 
 

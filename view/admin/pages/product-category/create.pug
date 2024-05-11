@@ -4,70 +4,73 @@ include ../../mixins/alert.pug
 block title 
     title  title
 
-block main 
-    +alert-danger(5000)
+block main
+    if(role.permission.includes("products-category_create"))
+        +alert-danger(5000)
 
-    h1(class= "mb-4") Thêm mới danh mục sản phẩm
+        h1(class= "mb-4") Thêm mới danh mục sản phẩm
 
 
-    form(action="/admin/product-category/create"
-    id="create-form"
-    method= "POST"
-    enctype="multipart/form-data"
-    ) 
- 
-        div(class="form-group mb-3")
-            label(for="ttile" class="tw-bold") Tiêu đề
-            input(
-                type="text"
-                class="form-control"
-                id="title"
-                name="title"
+        form(action="/admin/product-category/create"
+        id="create-form"
+        method= "POST"
+        enctype="multipart/form-data"
+        ) 
+    
+            div(class="form-group mb-3")
+                label(for="ttile" class="tw-bold") Tiêu đề
+                input(
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    )
+
+            div(class="form-group mb-3")
+                label(for="danhmuccha_id" class="tw-bold") Danh mục cha
+                select(class="form-control" name="danhmuccha_id" id="danhmuccha_id")
+                    option(value="" ) -- Chọn danh mục cha --
+                    if(categories)
+                        +create_tree(categories)
+                            
+
+            div(class="form-group mb-3")
+                label(for="dsc") Mô tả
+                textarea( 
+                        class="form-control"
+                        id="dsc"
+                        name="description"  
+                        rows="5"
+                        )
+                
+            div(class="form-group mb-3"  style="margin: 15px;" upload-image)
+                label(for="img" style="margin-right: 15px;") Ảnh
+                input(type="file"
+                id="img"
+                class="form-control-file"
+                name="thumbnail"
+                accept="image/*"
+                upload-image-input
                 )
 
-        div(class="form-group mb-3")
-            label(for="danhmuccha_id" class="tw-bold") Danh mục cha
-            select(class="form-control" name="danhmuccha_id" id="danhmuccha_id")
-                option(value="" ) -- Chọn danh mục cha --
-                if(categories)
-                    +create_tree(categories)
-                        
+                img(src="" 
+                upload-image-preview 
+                class="upload-img-preview")
 
-        div(class="form-group mb-3")
-            label(for="dsc") Mô tả
-            textarea( 
-                    class="form-control"
-                    id="dsc"
-                    name="description"  
-                    rows="5"
-                    )
-            
-        div(class="form-group mb-3"  style="margin: 15px;" upload-image)
-            label(for="img" style="margin-right: 15px;") Ảnh
-            input(type="file"
-            id="img"
-            class="form-control-file"
-            name="thumbnail"
-            accept="image/*"
-            upload-image-input
-            )
+            div(class="form-group mb-3")
+                label(for="position") Vị trí
+                input(type="text"
+                class="form-control"
+                id="position"
+                name="position"
+                placeholder="Tự động tăng"
+                min="1")
 
-            img(src="" 
-            upload-image-preview 
-            class="upload-img-preview")
+            div(class="form-group mb-3")
+            button(type="submit"
+            class="btn btn-primary") Tạo mới
 
-        div(class="form-group mb-3")
-            label(for="position") Vị trí
-            input(type="text"
-            class="form-control"
-            id="position"
-            name="position"
-            placeholder="Tự động tăng"
-            min="1")
-
-        div(class="form-group mb-3")
-        button(type="submit"
-        class="btn btn-primary") Tạo mới
-
-    script(src="/admin/JS/product.js") 
-    
+        script(src="/admin/JS/product.js")
+    else 
+        h1 Bạn không có quyền xài chức năng này
+        
