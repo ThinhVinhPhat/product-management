@@ -71,6 +71,7 @@ block main
                                 th Vị trí 
                                 th Trạng Thái
                                 th Người Tạo
+                                th Cập Nhật Gần Nhất
                                 th Hành Động
                             
 
@@ -124,9 +125,13 @@ block main
                                     td
                                          
                                         p   #{item.user_name}
+                                            
+                                        +formateDate(item.createdBy.createdAt)
+                                    td
                                          
-                                        p   
-                                            +formateDate(item.createdBy.createdAt)
+                                        p   #{item.user_update}
+                                            
+                                        +formateDateTime(item.UpdatedBy.UpdateAt)
 
                                     td
                                         

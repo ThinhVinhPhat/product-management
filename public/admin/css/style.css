@@ -121,3 +121,14 @@
     cursor: pointer;
     font-weight: bold;
 }
+
+#account-status{
+    position: absolute;
+   background-color: red;
+    border-radius: 10px; 
+    top: 30px;
+    width: 18px;
+    height: 18px;
+    line-height: 10px;
+    z-index: 100000;
+}

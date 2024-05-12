@@ -4,7 +4,7 @@ block title
     title  title
 
 block main
-       if(role.permission.includes("product_edit"))
+    if(role.permission.includes("product_edit"))
             +alert-danger(5000)
             +alert-success(5000)
 
@@ -121,5 +121,5 @@ block main
                 class="btn btn-primary") Cập nhật
 
             script(src="/admin/JS/product.js")
-        else 
-            h1 Bạn không có quyền xài chức năng này
+    else 
+        h1 Bạn không có quyền xài chức năng này

@@ -11,7 +11,8 @@ block main
 
     if(role.description)
         div(class="mb-4") Mô tả: <b>!{role.description}</b>
-      
-    a(href=`/admin/roles/edit/${role.id}`
-    class="btn btn-warning"
-    ) Chỉnh sửa 
+    
+    if(role.permission.includes("roles_edit"))
+        a(href=`/admin/roles/edit/${role.id}`
+        class="btn btn-warning"
+        ) Chỉnh sửa 

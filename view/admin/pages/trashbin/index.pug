@@ -3,6 +3,7 @@ include ../../mixins/filterstatus.pug
 include ../../mixins/findbar.pug
 include ../../mixins/pagination.pug
 include ../../mixins/change_multi.pug
+include ../../mixins/moment.pug
 block title
     title title
 
@@ -37,7 +38,8 @@ block main
                             th Hình ảnh
                             th Tiêu đề
                             th Giá
-                            th Trạng Thái 
+                            th Trạng Thái
+                            th Người Xóa
                             th Hành Động 
 
                     tbody 
@@ -64,6 +66,13 @@ block main
                                         pro_id = item.id
                                         button-change-status
                                         ) Dừng Hoạt Động
+
+                                td
+                                         
+                                    p   #{item.user_name}
+                                        
+                                    +formateDate(item.createdBy.createdAt)
+
                                 td 
                                     button(class="btn btn-warning btn-sm" style="margin: 10px"
                                     pro_id= item.id

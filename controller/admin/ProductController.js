@@ -56,7 +56,7 @@ module.exports.product = async (req, res) => {
         sort[req.query.sort] = req.query.position
     }
     else{
-        sort[req.query.sort] = "desc"
+        sort["price"] = "asc"
 
     }
 
@@ -64,6 +64,7 @@ module.exports.product = async (req, res) => {
         find).sort(sort).limit(4).skip(pagination.skip)
 
     for(const product of products){
+        // tìm ra user tạo sản phẩm
         const user = await Account.findOne({
             _id: product.createdBy.account_id,
             deleted: false
@@ -71,6 +72,18 @@ module.exports.product = async (req, res) => {
         if(user){
             product.user_name = user.fullname
         }
+        // tìm ra user cập nhật gần đây nhất
+       const latestUpdate = product.UpdatedBy.slice(-1)[0]
+       if(latestUpdate){
+
+           const user_update = await Account.findOne({
+               _id: latestUpdate.account_id,
+               deleted: false
+           }) 
+           if(user_update){
+               product.user_update = user_update.fullname
+           }
+       }
     }
 
 
@@ -90,9 +103,14 @@ module.exports.changestatus = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
 
+    const UpdateAt = {
+        account_id: res.locals.user.id,
+        UpdateAt: Date.now()
+    }    
+
     req.flash("success", "Cập nhật trạng thái thành công");
 
-    await Product.updateOne({ _id: id }, { status: status })
+    await Product.updateOne({ _id: id }, { status: status , $push:{updatedAt: UpdateAt}})
 
     res.redirect("back")
 }
@@ -104,20 +122,25 @@ module.exports.changemulti = async (req, res) => {
     const reqid = req.body.ids.split(", ");
     const reqstatus = req.body.type
 
+    const UpdateAt = {
+        account_id: res.locals.user.id,
+        UpdateAt: Date.now()
+    }   
+
     switch (reqstatus) {
         case "active":
-            await Product.updateMany({ _id: { $in: reqid } }, { status: "active" })
+            await Product.updateMany({ _id: { $in: reqid } }, { status: "active" ,$push:{updatedAt: UpdateAt} })
             break;
         case "inactive":
-            await Product.updateMany({ _id: { $in: reqid } }, { status: "inactive" })
+            await Product.updateMany({ _id: { $in: reqid } }, { status: "inactive" ,$push:{updatedAt: UpdateAt} })
             break;
         case "delete_all":
-            await Product.updateMany({ _id: { $in: reqid } }, { deleted: true })
+            await Product.updateMany({ _id: id }, { deleted: true ,deletedBy:{account_id: res.locals.user.id,deletedAt: Date.now()} })
             break;
         case "change-postion":
             for (const item of reqid) {
                 const [id, postion] = item.split("-")
-                await Product.updateMany({ _id: { $in: id } }, { position: postion })
+                await Product.updateMany({ _id: { $in: id } }, { position: postion, $push:{updatedAt: UpdateAt} })
             }
 
             break;
@@ -131,7 +154,7 @@ module.exports.changemulti = async (req, res) => {
 module.exports.delete = async (req, res) => {
     const id = req.params.id;
 
-    await Product.updateOne({ _id: id }, { deleted: true }, { deletedAt: new Date() })
+    await Product.updateOne({ _id: id }, { deleted: true ,deletedBy:{account_id: res.locals.user.id,deletedAt: Date.now()} })
     req.flash("delete", "Xóa thành công");
     res.redirect("back")
 
@@ -205,11 +228,11 @@ module.exports.edit = async (req, res) => {
 
         const product = await Product.findOne(find);
 
-            
+
         const categories = await Product_category.find({
             deleted: false
         });
-    
+        
         const sorted_categories = createTree.tree(categories)
     
 
@@ -230,6 +253,11 @@ module.exports.editPatch = async (req, res) => {
     const id = req.params.id;
 
    
+    const UpdateAt = {
+        account_id: res.locals.user.id,
+        UpdateAt: Date.now()
+    }    
+    
 
     if (!req.body.title) {
         req.flash("error", "Vui lòng nhập vào tiêu đề")
@@ -246,7 +274,7 @@ module.exports.editPatch = async (req, res) => {
         req.body.thumbnail = `/upload/${req.file.filename}`
     }
     try {
-        await Product.updateOne({ _id: id }, req.body);
+        await Product.updateOne({ _id: id }, {...req.body, $push: {UpdatedBy: UpdateAt }});
         req.flash("success", "Cập nhật thành công");
         res.redirect("back")
     } catch (error) {

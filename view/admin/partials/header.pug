@@ -6,6 +6,10 @@ header.header
                     a(href="/admin/dashbroad") ADMIN 
 
             .col-9.mt-3.d-flex.justify-content-end
+                .account-detail-button(class="d-flex justify-content-end  ")
+                    a(href="/admin/user/account" class="d-flex justify-content-end position-relative  ")
+                        img(src=user.avatar alt="" class="m-1 px-1 p-0" style="border-radius: 50px; width: 20%;")
+                        p(class="text-bg-success" id="account-status" style="") 
                 .exit-button
-                    a(class="btn btn-danger" href="/admin/auth/logout") Đăng xuất
-    
+                    a(class="btn btn-danger m-1" href="/admin/auth/logout") Đăng xuất
+        

@@ -3,6 +3,7 @@ const filterStatuHelper = require("../../helper/filterStatus")
 const findHelper = require("../../helper/find")
 const paginationhelper = require("../../helper/pagination")
 const { default: mongoose } = require("mongoose")
+const Account = require("../../model/account.model")
 
 
 // moudle display sản phẩm 
@@ -48,6 +49,16 @@ module.exports.delete = async (req, res) => {
 
     const products = await Product.find(
         find).limit(4).skip(pagination.skip)
+    
+    for(const product of products){
+        const user = await Account.findOne({
+            deleted: false,
+            _id: product.deletedBy.account_id
+        })
+        if(user){
+            product.user_name = user.fullname
+        }
+    }
 
     res.render("admin/pages/trashbin/index", {
         title: "Thùng Rác",
