@@ -9,13 +9,18 @@ module.exports.changestatus = async(req,res) =>{
     const id = req.params.id
     const status = req.params.status
 
+   
+    const UpdateAt = {
+        account_id: res.locals.user.id,
+        UpdateAt: Date.now()
+    }    
+    
     req.flash("success", "Cập nhật trạng thái thành công");
 
-    await Product_category.updateOne({_id: id},{status: status})
+    await Product_category.updateOne({_id: id},{status: status,$push: {UpdatedBy: UpdateAt }})
     res.redirect("back")
     
 }
-
 
 // moudle display sản phẩm 
 module.exports.product = async (req, res) => {
@@ -75,6 +80,8 @@ module.exports.product = async (req, res) => {
     const records = await Product_category.find(
         find).sort(sort).limit(4).skip(pagination.skip)
 
+
+
     const sorted_categories = createTree.tree(records)
 
         res.render("admin/pages/product-category/index", {
@@ -120,6 +127,10 @@ module.exports.createPost = async (req,res) =>{
         req.body.position = parseInt(req.body.position);
     }
 
+    req.body.createdBy = {
+        account_id: res.locals.user.id,
+        createdAt: Date.now()
+    }
 
     const product_category = new Product_category(req.body);
     await product_category.save()
@@ -172,9 +183,15 @@ module.exports.edit = async(req,res)=>{
 module.exports.editPatch = async(req,res)=>{
     const id = req.params.id
 
+   
+    const UpdateAt = {
+        account_id: res.locals.user.id,
+        UpdateAt: Date.now()
+    }    
+    
     req.body.position = parseInt(req.body.position)
 
-    await Product_category.updateOne({_id: id},req.body)
+    await Product_category.updateOne({ _id: id }, {...req.body, $push: {UpdatedBy: UpdateAt }});
     req.flash("edit", "Tạo mới thành công");
     res.redirect("back")
 }

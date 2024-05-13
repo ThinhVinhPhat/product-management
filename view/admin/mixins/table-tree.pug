@@ -18,6 +18,18 @@ mixin table-tree(arr , level=1)
                     name = "postion"
                     )
                 td
+                                    
+                    p   #{item.user_name}
+                        
+                    +formateDate(item.createdBy.createdAt)
+                td
+                                         
+                    p   #{item.user_update}
+                        
+                    +formateDateTime(item.UpdatedBy.UpdateAt)
+
+                                  
+                td
                  
                     a(
 

@@ -18,6 +18,8 @@ const productSchema = new mongoose.Schema({
 
     stock:Number,
 
+    featured: String,
+
     thumbnail:String,
 
     status: String,

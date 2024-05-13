@@ -5,7 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/change_multi.pug
 include ../../mixins/alert.pug
 include ../../mixins/table-tree.pug
-
+include ../../mixins/moment.pug
 block title
     title title
 
@@ -66,6 +66,8 @@ block main
                                 th Email
                                 th Nhóm Quyền
                                 th Trạng thái
+                                th Người Tạo
+                                th Cập Nhật Gần Nhất
                                 th Thao tác
                         
                             
@@ -116,21 +118,34 @@ block main
                                                     
                                                     ) Dừng Hoạt Động
 
-                                        td 
-                                                a(
+                                        td
+                                         
+                                            p   #{item.user_name}
+                                            
+                                            +formateDate(item.createdBy.createdAt)
+                                        td
+                                         
+                                            p   #{item.user_update}
+                                            
+                                            +formateDateTime(item.UpdatedBy.UpdateAt)
 
-                                                    href=`/admin/account/detail/${item.id}`
-                                                    class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
-                                                if(role.permission.includes("account_edit"))
+                                        td  
+
+                                            td 
                                                     a(
 
-                                                        href=`/admin/account/edit/${item.id}`
-                                                        class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
+                                                        href=`/admin/account/detail/${item.id}`
+                                                        class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
+                                                    if(role.permission.includes("account_edit"))
+                                                        a(
 
-                                                if(role.permission.includes("account_delete"))
-                                                    button(class="btn btn-danger btn-sm ml-1"
-                                                        pro_id= item.id
-                                                        delete_buttons) Xóa
+                                                            href=`/admin/account/edit/${item.id}`
+                                                            class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
+
+                                                    if(role.permission.includes("account_delete"))
+                                                        button(class="btn btn-danger btn-sm ml-1"
+                                                            pro_id= item.id
+                                                            delete_buttons) Xóa
 
         +pagination(pagination)
         form(action="", 

@@ -10,9 +10,15 @@ module.exports.changestatus = async(req,res) =>{
     const id = req.params.id
     const status = req.params.status
 
+   
+    const UpdateAt = {
+        account_id: res.locals.user.id,
+        UpdateAt: Date.now()
+    }    
+    
     req.flash("success", "Cập nhật trạng thái thành công");
 
-    await Account.updateOne({_id: id},{status: status})
+    await Account.updateOne({_id: id},{status: status,$push: {UpdatedBy: UpdateAt }})
         res.redirect("back")
     
 }
@@ -125,6 +131,10 @@ module.exports.createPost = async (req, res) => {
         return;
     }
     else {
+    req.body.createdBy = {
+        account_id: res.locals.user.id,
+        createdAt: Date.now()
+    }
         const account = new Account(req.body)
         await account.save()
 
@@ -163,6 +173,12 @@ module.exports.editPatch = async(req,res) =>{
     const id = req.params.id
 
 
+   
+    const UpdateAt = {
+        account_id: res.locals.user.id,
+        UpdateAt: Date.now()
+    }    
+    
 
     if(req.body.password){
         req.body.password = md5(req.body.password)
@@ -181,11 +197,32 @@ module.exports.editPatch = async(req,res) =>{
     }
     else{
         
-        await Account.updateOne({_id: id},req.body)
+        await Account.updateOne({ _id: id }, {...req.body, $push: {UpdatedBy: UpdateAt }});
     
         req.flash("success","Cập nhật thành công")
         res.redirect("back")
         
     }
 
+}
+
+
+module.exports.detail = async(req,res)=>{
+    const id = req.params.id
+
+    const account = await Account.findOne({
+        deleted: false,
+        _id: id
+    }).select("-password -token")
+
+    const role = await Role.findOne({
+        _id: account.role_id,
+        deleted: false
+    }).select("title")
+
+    res.render("admin/pages/account/detail",{
+        title: "Thông tin tài khoản",
+        account: account,
+        roles: role
+    })
 }

@@ -17,13 +17,36 @@ const roles_model = new mongoose.Schema({
         type: String,
         default: ""
     },
-    
+    createdBy:{
+        account_id: String,
+        createdAt: {
+            type: Date,
+            default: Date.now()
+        }
+    },
+
     deleted: {
         type: Boolean,
         default: false
     },
     
-    deletedAt: Date,
+    deletedBy: {
+        account_id: String,
+        deletedAt: {
+            type: Date,
+            default: Date.now()
+        }
+    },
+    UpdatedBy: 
+        [
+    {
+        account_id: String,
+        UpdateAt: {
+            type: Date,
+            default: Date.now()
+        }
+    } 
+    ]
 
 },{
     timestamps: true

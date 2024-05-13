@@ -1,0 +1,35 @@
+extends ../../layout/default.pug
+
+block title 
+    title title 
+
+block main 
+    h1(class= "mb-4") Thông tin tài khoản
+    .row(class="d-flex" style="width: 100%")
+        .col-4
+            if(account.fullname)
+                div(class="mb-4") Họ tên: <b>#{account.fullname}</b>
+
+            if(account.email)
+                div(class="mb-4") Email: <b>#{account.email}</b>
+            if(account.phone)
+                div(class="mb-4") Số điện thoại: <b>#{account.phone}</b>
+            if(roles.title)
+                div(class="mb-4") Nhóm quyền: <b>#{role.title}</b>
+        
+            if(account.status)
+                div(class="mb-4") 
+                    span Trạng thái: 
+                    if (account.status === "active") 
+                        span(class="btn btn-success" style="padding:2px;" ) Hoạt động
+                    else
+                        span(class="btn btn-danger" style="padding:2px;") Dừng Hoạt động
+                
+                a(href=`/admin/account/edit/${account.id}`
+                class="btn btn-warning"
+                ) Chỉnh sửa 
+
+        .col-4
+            if(account.avatar)
+                div(class="mb-4 d-flex justify-content-center")
+                    img(src=account.avatar, alt="" class="w-100")

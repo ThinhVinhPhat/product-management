@@ -32,7 +32,22 @@ block main
                                 if(categories)
                                     +create_tree(categories)
 
-                    
+                    div(class="form-group form-check form-check-inline m-1")
+                        input(type="radio"
+                    class="form-check-input"
+                    id="featuredyes"
+                    name="featured"
+                    value="yes"
+                    checked)
+                        label(for="statusActive" class="form-check-label") Nổi bật
+                        
+                    div(class="form-group form-check form-check-inline m-1")
+                        input(type="radio"
+                    class="form-check-input"
+                    id="featuredno"
+                    name="featured"
+                    value="no")
+                        label(for="statusInactive" class="form-check-label") Không
 
                     div(class="form-group")
                         label(for="dsc") Mô tả

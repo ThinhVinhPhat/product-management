@@ -12,6 +12,8 @@ route.get("/",AccountController.index)
 
 route.get("/create",AccountController.create)
 
+route.get("/detail/:id",AccountController.detail)
+
 route.patch("/change-status/:status/:id",AccountController.changestatus)
 
 route.post("/create",upload.single("avatar"),

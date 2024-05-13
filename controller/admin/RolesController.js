@@ -81,7 +81,11 @@ module.exports.create = async (req,res)=>{
 
 module.exports.createPost = async (req,res)=>{ 
 
-
+    req.body.createdBy = {
+        account_id: res.locals.user.id,
+        createdAt: Date.now()
+    }
+    
     const role = new Roles(req.body)
     console.log(req.body)
     await role.save()
@@ -110,8 +114,14 @@ module.exports.edit = async (req,res)=>{
 module.exports.editPost = async (req,res)=>{
     const id= req.params.id
 
+   
+    const UpdateAt = {
+        account_id: res.locals.user.id,
+        UpdateAt: Date.now()
+    }    
+    
     console.log(req.body)
-    await Roles.updateOne({id},req.body)
+    await Roles.updateOne({ _id: id }, {...req.body, $push: {UpdatedBy: UpdateAt }});
     res.redirect("back")
 }
 

@@ -34,6 +34,23 @@ block main
                             option(value="" ) -- Chọn danh mục cha --
                                 if(categories)
                                     +create_tree(categories,1,categories.danhmuccha_id)
+                
+                div(class="form-group form-check form-check-inline")
+                    input(type="radio"
+                class="form-check-input"
+                id="featuredyes"
+                name="featured"
+                value="yes"
+                checked = (product.featured == "yes" ? true: false) )
+                    label(for="featuredyes" class="form-check-label") Nổi bật
+                div(class="form-group form-check form-check-inline")
+                    input(type="radio"
+                class="form-check-input"
+                id="featuredno"
+                name="featured"
+                value="no"
+                checked = (product.status == "no" ? true: false))
+                    label(for="featuredno" class="form-check-label") Không
 
                 div(class="form-group")
                     label(for="dsc") Mô tả

@@ -4,6 +4,7 @@ include ../../mixins/findbar.pug
 include ../../mixins/pagination.pug
 include ../../mixins/change_multi.pug
 include ../../mixins/alert.pug
+include ../../mixins/moment.pug
 block title
     title title
 
@@ -64,6 +65,8 @@ block main
                         
                                 th Tiêu đề
                                 th Mô tả
+                                th Người Tạo
+                                th Cập Nhật Gần Nhất
                                 th Thao tác
                         
                             
@@ -79,22 +82,35 @@ block main
 
                                         td(style="margin: 10px") #{item.description}
 
-                                        td 
-                                            a(
-
-                                                href=`/admin/roles/detail/${item.id}`
-                                                class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
+                                        td
+                                         
+                                            p   #{item.user_name}
                                             
-                                            if(role.permission.includes("roles_edit"))
+                                            +formateDate(item.createdBy.createdAt)
+                                        td
+                                         
+                                            p   #{item.user_update}
+                                            
+                                            +formateDateTime(item.UpdatedBy.UpdateAt)
+
+                                        td
+
+                                            td 
                                                 a(
 
-                                                    href=`/admin/roles/edit/${item.id}`
-                                                    class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
-                                            if(role.permission.includes("roles_delete"))
+                                                    href=`/admin/roles/detail/${item.id}`
+                                                    class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
+                                                
+                                                if(role.permission.includes("roles_edit"))
+                                                    a(
 
-                                                button(class="btn btn-danger btn-sm ml-1"
-                                                    pro_id= item.id
-                                                    delete_buttons) Xóa
+                                                        href=`/admin/roles/edit/${item.id}`
+                                                        class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
+                                                if(role.permission.includes("roles_delete"))
+
+                                                    button(class="btn btn-danger btn-sm ml-1"
+                                                        pro_id= item.id
+                                                        delete_buttons) Xóa
         +pagination(pagination)
         form(action="", 
         method="POST",
