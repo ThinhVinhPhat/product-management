@@ -1,30 +1,69 @@
 extends ../../layout/default.pug
-
+include ../../mixins/product_layout.pug
 block title 
     title title 
 
 block main 
-    h1(class="mb-3") Trang chi tiet san pham
+    h6(class="m-3")
+    a(href=`/product` class="m-1 text-decoration-none fw-bold")  Trang Chủ > 
+      a(href=`/product/${product.category_slug}` class="m-1 text-decoration-none fw-bold")  #{product.category} > 
+        a(href=`/product/detail/${product.id}` class="m-1 text-decoration-none fw-bold")  #{product.title}
 
-    div(class="row-10 m-3 d-flex justify-content-evenly")
-        div(class="img img-thumbnail")
+    div(class="row m-3 d-flex justify-content-evenly")
+        div(class="col-4 img img-thumbnail" style="width: 30%;")
             if(product.thumbnail)
-                div(class="mb-4") 
-                    img(src=product.thumbnail, alt="", style="width: 500px;")
-        div(class="detail m-3")
+                img(src=product.thumbnail, alt="", class="w-100 p-2")
+        div(class="col-4 m-3")
 
             if(product.title)
-                div(class="mb-4" style="font-size: 30px;") Tên sản phẩm: <b>#{product.title}</b>
+                div(class="mb-4" style="font-size: 30px;") <b>#{product.title}</b>
 
-            if(product.description)
-                div(class="mb-4") Mô tả: <b>#{product.description}</b>
+                
+            if(product.category)
+                div(class="mb-4") Danh mục:
+                    a(href=`/product/${product.category_slug}` class="m-1 text-decoration-none")  #{product.category}
 
+
+            if(product.PriceNew)
+                div(class="mb-1 mx-2 fs-3 text-success d-flex")
+                    <b>#{product.PriceNew}$</b>
+                    if(product.discountPercentage)
+                        div(class="mb-4 mx-2 text-bg-secondary d-flex justify-content-center" style="width: 10%; border-radius: 10px; opacity: 0.2;font-size: 13px; ") 
+                            <b>-#{product.discountPercentage}$</b>
+    
             if(product.price)
-                div(class="mb-4") Giá: <b>#{product.price}$</b>
-
-            if(product.discountPercentage)
-                div(class="mb-4") Giảm giá: <b>#{product.discountPercentage}$</b>
+                div(class="mb-4 fs-5 text-decoration-line-through text-danger") 
+                    <b>#{product.price}$</b>
+                    
+            div(class="mb-4") Tiết kiệm lên đến  <b class="text-bg-danger p-1 " style="border-radius: 10px;">#{product.price - product.PriceNew }$</b>
+            
             if(product.stock)
-                div(class="mb-4") Số lượng: <b>#{product.stock}</b>
+                div(class="mb-4") Còn lại <b class="text-bg-success p-1 " style="border-radius: 10px;" >#{product.stock}</b> sản phẩm
+
+
+            form(action=`/cart/add/${product.id}`
+                method="POST") 
+
+                input(type="number"
+                    class="form-control"
+                    name="quantity"
+                    id="quantity"
+                    value="1"
+                    min="1"
+                    max=product.stock)
+                .mb-4.d-flex.justify-content-center
+                    button(type="submit" class="m-2 btn btn-success w-100") Thêm vào giỏ hàng
+
+
+    .container
+        h1(class="text-success") Mô tả sản phẩm
+        if(product.description)
+            div(class="mb-4") <b>!{product.description}</b>
+
+    .row
+        h1(class="text-success") Sản phẩm liên quan
+        if(related)
+            +product_layout(related) 
+
 
         

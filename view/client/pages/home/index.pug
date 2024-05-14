@@ -1,8 +1,14 @@
 extends ../../layout/default.pug
+include ../../mixins/product_item.pug
 
 
 block title 
     title #{titlePage}
 
 block main
-    h1 Trang chủ                                                                                      
+
+    .row.mt-3
+        h1(class="text-success") Sản Phẩm nổi bật
+        each item in products
+            +product_item(item)
+                                                                                           

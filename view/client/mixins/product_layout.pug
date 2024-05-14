@@ -1,0 +1,15 @@
+mixin product_layout(Products)
+     each item in Products
+        .col-4.mb-3
+            .product-item 
+                .inner-imgae.d-flex.justify-content-center.position-relative
+                    img(src=item.thumbnail, alt=item.title)
+                    if item.featured == "yes"
+                        .feature.position-absolute
+                            p Nổi bật
+                .inner-content
+                    a(href=`/product/detail/${item.id}`) 
+                        h3.inner-title #{item.title}
+                    .inner-price-new #{item.PriceNew}$
+                    .inner-price-old #{item.price}$
+                    .inner-discount  #{item.discountPercentage}%

@@ -80,6 +80,7 @@ module.exports.create = async (req,res)=>{
 
 
 module.exports.createPost = async (req,res)=>{ 
+    if(res.locals.role.permission.includes("roles_create")){
 
     req.body.createdBy = {
         account_id: res.locals.user.id,
@@ -91,6 +92,11 @@ module.exports.createPost = async (req,res)=>{
     await role.save()
 
     res.redirect("back")
+}
+else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
 }
 
 
@@ -112,6 +118,8 @@ module.exports.edit = async (req,res)=>{
 
 
 module.exports.editPost = async (req,res)=>{
+    if(res.locals.role.permission.includes("roles_edit")){
+
     const id= req.params.id
 
    
@@ -123,6 +131,11 @@ module.exports.editPost = async (req,res)=>{
     console.log(req.body)
     await Roles.updateOne({ _id: id }, {...req.body, $push: {UpdatedBy: UpdateAt }});
     res.redirect("back")
+}
+else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
 }
 
 
@@ -142,6 +155,8 @@ module.exports.permission = async (req,res) =>{
 } 
 
 module.exports.permissionPatch = async (req,res) =>{
+    if(res.locals.role.permission.includes("roles_role")){
+
     const permission = JSON.parse(req.body.permission)
 
     for (const item of permission) {
@@ -154,6 +169,10 @@ module.exports.permissionPatch = async (req,res) =>{
 
     req.flash("success","Cập nhật quyền thành công")
     res.redirect("back")
+} else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
 }
 
 

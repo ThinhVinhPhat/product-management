@@ -117,6 +117,7 @@ module.exports.create = async (req, res) => {
 }
 
 module.exports.createPost = async (req,res) =>{
+    if(res.locals.role.permission.includes("products-category_create")){
 
     if (req.body.position == "") {
         const pro_count = await Product_category.countDocuments();
@@ -137,22 +138,34 @@ module.exports.createPost = async (req,res) =>{
     req.flash("create", "Tạo mới thành công");
     res.redirect("/admin/product-category")
 }
-
+else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
+}
 
 
 /// hàm cho phép xóa tạm thời một sản phẩm 
 module.exports.delete = async (req,res) =>{
+    if(res.locals.role.permission.includes("products-category_delete")){
+
     const id  = req.params.id
 
     await Product_category.deleteOne({_id: id})
     req.flash("delete", "Xóa thành công");
     res.redirect("back")
 }
+else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
+}
 
 
 
 // hàm cho phép chỉnh sửa danh mục sản phẩm
 module.exports.edit = async(req,res)=>{
+    
     try{
 
         const id = req.params.id
@@ -181,6 +194,8 @@ module.exports.edit = async(req,res)=>{
 }
 
 module.exports.editPatch = async(req,res)=>{
+    if(res.locals.role.permission.includes("products-category_edit")){
+
     const id = req.params.id
 
    
@@ -191,9 +206,13 @@ module.exports.editPatch = async(req,res)=>{
     
     req.body.position = parseInt(req.body.position)
 
-    await Product_category.updateOne({ _id: id }, {...req.body, $push: {UpdatedBy: UpdateAt }});
+    await Product_category.updateOne({ _id: id }, {...req.body, $push: {UpdatedByv: UpdateAt }});
     req.flash("edit", "Tạo mới thành công");
     res.redirect("back")
+} else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
 }
 
 

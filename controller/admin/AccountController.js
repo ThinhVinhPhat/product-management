@@ -117,6 +117,8 @@ module.exports.create = async (req, res) => {
 
 // module tạo tài khoản
 module.exports.createPost = async (req, res) => {
+    if(res.locals.role.permission.includes("account_create")){
+
     if (req.body.password) {
         req.body.password = md5(req.body.password)
     }
@@ -144,6 +146,11 @@ module.exports.createPost = async (req, res) => {
     }
 
 }
+else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
+}
 
 // module trang chỉnh sửa trang 
 module.exports.edit = async(req,res)=>{
@@ -170,6 +177,8 @@ module.exports.edit = async(req,res)=>{
 }
 
 module.exports.editPatch = async(req,res) =>{
+    if(res.locals.role.permission.includes("account_edit")){
+
     const id = req.params.id
 
 
@@ -204,6 +213,12 @@ module.exports.editPatch = async(req,res) =>{
         
     }
 
+
+}
+else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
 }
 
 
@@ -225,4 +240,23 @@ module.exports.detail = async(req,res)=>{
         account: account,
         roles: role
     })
+}
+
+module.exports.delete = async(req,res)=>{
+    if(res.locals.role.permission.includes("account_delete")){
+
+    const id = req.params.id
+    if(id){
+        await Account.deleteOne({_id: id})
+        req.flash("success","Xóa thành công")
+        res.redirect("back")
+    }
+    else{
+        req.flash("error","Xóa không thành công thành công")
+        res.redirect("back")
+    }
+} else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
 }

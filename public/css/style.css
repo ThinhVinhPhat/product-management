@@ -59,12 +59,14 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
+    height: 100%;
 }
 
 .product-item .inner-image {
     width: 100%;
     aspect-ratio: 4/3;
     border-bottom: 1px solid #ddd;
+    height: 100%;
 }
 .product-item .inner-image img {
 width: 100%;
@@ -178,3 +180,24 @@ font-weight: 600;
 }
 
 /* end sub-menu */
+
+
+/* fetured */
+.feature{
+    top: 0;
+    right: 0px;
+    background-color: red ;
+    font-weight: bold;
+    color: white;
+    margin: 10px;
+    padding: 5px 10px 0px 10px;
+    line-height: 15px;
+    border-radius: 10px;
+}
+
+.feature p {
+    padding-top: 5px;
+}
+
+
+/* end fetured */

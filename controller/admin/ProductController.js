@@ -110,7 +110,7 @@ module.exports.changestatus = async (req, res) => {
 
     req.flash("success", "Cập nhật trạng thái thành công");
 
-    await Product.updateOne({ _id: id }, { status: status , $push:{updatedAt: UpdateAt}})
+    await Product.updateOne({ _id: id }, { status: status , $push:{UpdatedBy: UpdateAt}})
 
     res.redirect("back")
 }
@@ -129,10 +129,10 @@ module.exports.changemulti = async (req, res) => {
 
     switch (reqstatus) {
         case "active":
-            await Product.updateMany({ _id: { $in: reqid } }, { status: "active" ,$push:{updatedAt: UpdateAt} })
+            await Product.updateMany({ _id: { $in: reqid } }, { status: "active" ,$push:{UpdatedBy: UpdateAt} })
             break;
         case "inactive":
-            await Product.updateMany({ _id: { $in: reqid } }, { status: "inactive" ,$push:{updatedAt: UpdateAt} })
+            await Product.updateMany({ _id: { $in: reqid } }, { status: "inactive" ,$push:{UpdatedBy: UpdateAt} })
             break;
         case "delete_all":
             await Product.updateMany({ _id: id }, { deleted: true ,deletedBy:{account_id: res.locals.user.id,deletedAt: Date.now()} })
@@ -140,7 +140,7 @@ module.exports.changemulti = async (req, res) => {
         case "change-postion":
             for (const item of reqid) {
                 const [id, postion] = item.split("-")
-                await Product.updateMany({ _id: { $in: id } }, { position: postion, $push:{updatedAt: UpdateAt} })
+                await Product.updateMany({ _id: { $in: id } }, { position: postion, $push:{UpdatedBy: UpdateAt} })
             }
 
             break;
@@ -152,12 +152,18 @@ module.exports.changemulti = async (req, res) => {
 
 // hàm cho phép xóa một sản phẩm tạm thời 
 module.exports.delete = async (req, res) => {
+    if(res.locals.role.permission.includes("product_delete")){
+
     const id = req.params.id;
 
     await Product.updateOne({ _id: id }, { deleted: true ,deletedBy:{account_id: res.locals.user.id,deletedAt: Date.now()} })
     req.flash("delete", "Xóa thành công");
     res.redirect("back")
 
+} else{
+        alert("Bạn không có quyền sử dụng chức năng này")
+        res.send("403")
+    }
 }
 
 
@@ -182,31 +188,38 @@ module.exports.create = async (req, res) => {
 }
 
 module.exports.createPost = async (req, res) => {
-    req.body.price = parseInt(req.body.price);
-    req.body.discountPercentage = parseInt(req.body.discountPercentage);
-    req.body.stock = parseInt(req.body.stock)
+    if(res.locals.role.permission.includes("product_create")){
 
-    if (req.body.position == "") {
-        const pro_count = await Product.countDocuments();
-
-        req.body.position = pro_count + 1;
+        req.body.price = parseInt(req.body.price);
+        req.body.discountPercentage = parseInt(req.body.discountPercentage);
+        req.body.stock = parseInt(req.body.stock)
+    
+        if (req.body.position == "") {
+            const pro_count = await Product.countDocuments();
+    
+            req.body.position = pro_count + 1;
+        }
+        else {
+            req.body.position = parseInt(req.body.position);
+        }
+    
+        req.body.createdBy = {
+            account_id: res.locals.user.id,
+            createdAt: Date.now()
+        }
+    
+        const product = new Product(req.body);
+        console.log(req.file)
+        await product.save();
+    
+    
+    
+        res.redirect("back")
     }
-    else {
-        req.body.position = parseInt(req.body.position);
+    else{
+        alert("Bạn không có quyền sử dụng chức năng này")
+        res.send("403")
     }
-
-    req.body.createdBy = {
-        account_id: res.locals.user.id,
-        createdAt: Date.now()
-    }
-
-    const product = new Product(req.body);
-    console.log(req.file)
-    await product.save();
-
-
-
-    res.redirect("back")
 }
 
 
@@ -226,19 +239,18 @@ module.exports.edit = async (req, res) => {
             _id: id
         }
 
-        const product = await Product.findOne(find);
-
+        const products = await Product.findOne(find);
 
         const categories = await Product_category.find({
             deleted: false
         });
-        
+
+     
         const sorted_categories = createTree.tree(categories)
     
-
         res.render("admin/pages/product/edit", {
             title: "Chỉnh sửa sản phẩm",
-            product: product,
+            product: products,
             categories: sorted_categories
         })
     }
@@ -250,6 +262,8 @@ module.exports.edit = async (req, res) => {
 
 
 module.exports.editPatch = async (req, res) => {
+    if(res.locals.role.permission.includes("product_edit")){
+
     const id = req.params.id;
 
    
@@ -282,9 +296,12 @@ module.exports.editPatch = async (req, res) => {
     }
 
 }
+else{
+    alert("Bạn không có quyền sử dụng chức năng này")
+    res.send("403")
+}
 
-
-
+}
 
 // xem chi tiết 1 sản phẩm
 

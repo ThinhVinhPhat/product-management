@@ -23,6 +23,8 @@ AccountController.createPost)
 
 route.get("/edit/:id",AccountController.edit)
 
+route.delete("/delete/:id",AccountController.delete)
+
 
 route.patch("/edit/:id",upload.single("avatar"),
 Cloudinary_upload.upload,
