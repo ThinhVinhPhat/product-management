@@ -1,9 +1,12 @@
 extends ../../layout/default.pug
 include ../../mixins/product_layout.pug
+include ../../mixins/alert.pug
 block title 
     title title 
 
 block main 
+    +alert-success(5000)
+
     h6(class="m-3")
     a(href=`/product` class="m-1 text-decoration-none fw-bold")  Trang Chủ > 
       a(href=`/product/${product.category_slug}` class="m-1 text-decoration-none fw-bold")  #{product.category} > 
@@ -49,7 +52,7 @@ block main
                     name="quantity"
                     id="quantity"
                     value="1"
-                    min="1"
+                    min="0"
                     max=product.stock)
                 .mb-4.d-flex.justify-content-center
                     button(type="submit" class="m-2 btn btn-success w-100") Thêm vào giỏ hàng

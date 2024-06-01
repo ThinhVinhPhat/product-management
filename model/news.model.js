@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const slug = require("mongoose-slug-updater")
+const mongoose = require("mongoose")
+const slug = require('mongoose-slug-updater')
 mongoose.plugin(slug);
 
-const productSchema = new mongoose.Schema({
+const NewsSchema = new mongoose.Schema({
     title: String,
 
     danhmuccha_id: {
@@ -12,12 +12,7 @@ const productSchema = new mongoose.Schema({
 
     description : String,
 
-   
-    price: Number,
-
-    discountPercentage: Number,
-
-    stock:Number,
+    short_description: String,
 
     featured: String,
 
@@ -63,6 +58,6 @@ const productSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Product = mongoose.model("Product",productSchema,"products")
+const News = mongoose.model("News",NewsSchema,"news")
 
-module.exports = Product;
+module.exports = News;

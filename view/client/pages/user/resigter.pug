@@ -1,0 +1,67 @@
+extends ../../layout/default.pug
+include ../../mixins/product_layout.pug
+include ../../mixins/alert.pug
+
+block title 
+    title #{titlePage}
+
+
+block main
+    +alert-danger(5000)
+    +alert-success(5000)
+    .container.my-5
+        .row.justify-content-center
+            .col-8
+              
+                h1(class="text-success") Đăng Ký
+                form(action="/user/resigter", method="post") 
+                    div(class="form-group mb-3 ")
+                        label(for="fullname") Họ Tên 
+                        input(type="text"
+                        class="form-control"
+                        name="fullname"
+                        id="fullname"
+                        ) 
+                    div(class="form-group mb-3")
+                        label(for="fullname") Email
+                        input(type="text"
+                        class="form-control"
+                        name="email"
+                        id="email"
+                        )
+                    div(class="form-group mb-3  position-relative")
+                        label(for="fullname") Mật khẩu
+                        input(type="password"
+                        class="form-control"
+                        name="password"
+                        id="password"
+                        password
+                        )
+                        i(class="fa-solid fa-eye position-absolute" style="top:55%; right:2%; cursor:pointer;" showpassword)
+                    div(class="form-group mb-3")
+                        label(for="fullname") Số điện thoại
+                        input(type="text"
+                        class="form-control"
+                        name="phone"
+                        id="phone"
+                        )
+                    div(class="form-group mb-3"  style="margin: 15px;" upload-image)
+                        label(for="avatar" style="margin-right: 15px;") Ảnh đại diện
+                        input(type="file"
+                        id="avatar"
+                        class="form-control-file"
+                        name="avatar"
+                        accept="image/*"
+                        upload-image-input
+                        )
+
+                    img(src="" 
+                    upload-image-preview 
+                    class="upload-img-preview")
+
+
+                    div(class="form-group m-1 d-flex justify-content-center")
+                        button(class="btn btn-primary" type="submit") Đăng ký
+    script(src="/Js/resigter.js")
+    script(src="/Js/password.js") 
+        

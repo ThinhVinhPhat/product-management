@@ -2,12 +2,26 @@ include ../mixins/sub_menu.pug
 
 header.header
     .container 
-        .row.align.item.center 
-            .col-3 
+        .row.align.item.center.d-flex.w-100
+            .col-2
                 .inner-logo 
                     a(href="/")
                         img(src="/img/Clothes.jpg", alt="") 
-            .col-9 
+
+            .col-3
+                form(action="/search", method="get")
+                    div(class="form-group mt-1 d-flex")
+                        input(type="text"
+                        class="form-control"
+                        id="search"
+                        name="keyword"
+                        placeholder="Nhập từ khóa"
+                        value=keyword
+                        )
+
+                        button(type="submit" class="btn btn-primary m-1") Tìm
+        
+            .col-7
                 .inner-menu 
                     ul
                         li 
@@ -16,3 +30,24 @@ header.header
                             -const path = "/product"
                             a(href="/product") Sản Phẩm
                                 +sub_menu(Product_category,path)
+                        li 
+                            a(href="/news") Blog
+
+                        li 
+                            a(href="/cart")
+                                i(class="fa-solid fa-cart-shopping fs-5 m-1 position-relative")
+                                    span(class="position-absolute" id="minicart") #{minicart ? minicart.totalProduct : 0}
+                        li
+                            if(user)
+                                .user-info.d-flex.justify-content-evenly
+                                    .account-detail-button(class="d-flex justify-content-end  ")
+                                        a(href="/admin/account/my_account" class="d-flex justify-content-end position-relative  ")
+                                        if(user.avatar)
+                                            img(src=user.avatar alt="" class="m-1 px-1 p-0" style="border-radius: 50px; width: 90%;")
+                                        p(class="m-3 fw-bold" id="account-status" style="") #{user.fullname}
+                                    .exit-button
+                                        a(class="btn btn-danger m-1" href="/user/logout") Đăng xuất
+
+                            else 
+                                a(href="/user/login" class="m-1") Đăng Nhập
+                                a(href="/user/resigter" class="m-1") Đăng Ký

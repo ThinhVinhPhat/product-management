@@ -1,7 +1,7 @@
 mixin product_layout(Products)
      each item in Products
         .col-4.mb-3
-            .product-item 
+            .product-item
                 .inner-imgae.d-flex.justify-content-center.position-relative
                     img(src=item.thumbnail, alt=item.title)
                     if item.featured == "yes"

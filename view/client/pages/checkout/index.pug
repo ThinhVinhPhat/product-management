@@ -1,0 +1,65 @@
+extends ../../layout/default.pug
+include ../../mixins/product_layout.pug
+include ../../mixins/alert.pug
+
+block title 
+    title #{titlePage}
+
+block main
+    +alert-success(5000)
+    .container 
+
+        h1(class="text-success") Giỏ Hàng
+
+            table(class="table m-2")
+                th STT
+                th Ảnh
+                th Tên 
+                th Giá
+                th Số lượng 
+                th Tổng Tiền 
+                th Hành động
+
+                each item,index in product 
+                    tr 
+                        td #{index+1}
+                        td(class="w-25")
+                            img(src=item.product.thumbnail, alt="" class="w-25")
+                        td #{item.product.title} 
+                        td  #{item.product.PriceNew}$
+                        td  #{item.quantity}
+                        td  #{item.product.total}$
+            
+            if(cart.products.length >0)
+                .payment.w-100.d-flex.justify-content-end
+                    h2(class="text-right") Tổng đơn hàng: #{cart.totalPrice}$
+        if(cart.products.length >0)
+            .row 
+                .col-12 
+                    .card.p-4.my-4
+                        form(action="/checkout/order", method="post")
+                            div(class="form-group")
+                                label(for="fullname") Họ Tên 
+                                input(type="text"
+                                class="form-control"
+                                name="fullname"
+                                id="fullname"
+                                required) 
+                            div(class="form-group")
+                                label(for="fullname") Số điện thoại
+                                input(type="text"
+                                class="form-control"
+                                name="phone"
+                                id="phone"
+                                required)
+                            div(class="form-group")
+                                label(for="fullname") Địa chỉ
+                                input(type="text"
+                                class="form-control"
+                                name="address"
+                                id="address"
+                                required)
+                            div(class="form-group d-flex justify-content-center")
+                                button(class="btn btn-success m-2 " type="submit") Đặt hàng
+             
+

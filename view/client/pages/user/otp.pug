@@ -1,0 +1,43 @@
+extends ../../layout/default.pug
+include ../../mixins/product_layout.pug
+include ../../mixins/alert.pug
+
+block title 
+    title #{titlePage}
+
+
+block main
+    +alert-danger(5000)
+    +alert-success(5000)
+    .container.my-5
+        .row.justify-content-center
+            .col-8
+
+                .row 
+                    .col-12 
+                        div(class="alert alert-success")
+                            | Mã OTP đã gửi về gmail của bạn
+
+              
+                h1(class="text-success") Nhập mã OTP
+                form(action="/user/password/otp", method="post") 
+                    div(class="form-group")
+                        label(for="fullname") Email
+                        input(type="text"
+                        class="form-control"
+                        name="email"
+                        id="email"
+                        value= email
+                        readonly
+                        )
+                    div(class="form-group")
+                        label(for="fullname") OTP
+                        input(type="text"
+                        class="form-control"
+                        name="otp"
+                        id="otp"
+                        )
+                    div(class="form-group m-2 d-flex justify-content-center")
+                        button(class="btn btn-primary" type="submit") Xác nhận
+
+

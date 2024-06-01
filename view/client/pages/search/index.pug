@@ -1,0 +1,10 @@
+extends ../../layout/default.pug
+include ../../mixins/product_layout.pug
+
+
+block title 
+    title #{titlePage}
+
+block main
+    .row.d-flex
+        +product_layout(products)

@@ -1,0 +1,157 @@
+extends ../../layout/default.pug
+include ../../mixins/filterstatus.pug
+include ../../mixins/findbar.pug
+include ../../mixins/pagination.pug
+include ../../mixins/change_multi.pug
+include ../../mixins/alert.pug
+include ../../mixins/table-tree.pug
+include ../../mixins/moment.pug
+block title
+    title title
+
+
+block main
+    if(role.permission.includes("account_view"))
+        +alert-danger(5000)
+        +alert-success(5000)
+
+        h1 Danh sách Bài Viết
+        .card.mb-3 
+            .card-header Bộ lọc và tìm kiếm
+            .card-body
+                .row
+                    .col-6  
+                        +filterStatus(filterStatus)
+                    .col-6 
+                        +find(keyword)
+
+        .card.mb-3 
+            .card-header Danh sách
+            .card-body
+                .row
+                    .col-8
+                        if(role.permission.includes("account_create"))
+                            a(href="/admin/news/create"
+                            class="btn btn-outline-success") + Thêm mới
+                    .col-8 
+                    div(sort class="d-flex w-75")
+                        select(
+                        name="sort"
+                        class="form-control"
+                        sort-select
+                        )
+                        
+                            option(value="position-desc") Vị trí giảm dần
+                            option(value="position-asc") Vị trí tăng dần
+                            option(value="title-asc") Tiêu đề A - Z
+                            option(value="title-desc") Tiêu đề Z - A
+
+                        button(
+                        class="btn btn-danger mt-2 m-2"
+                        sort-clear
+                        ) Clear
+                    .row
+                    table(
+                        class="table table-hover table-sm"
+                        checkbox-multi
+                    )
+                    
+                        thead 
+                            tr 
+                                th 
+                                    input(type="checkbox" name="checkall")
+                        
+                                th Tên bài viết
+                                th Hình đại diện
+                                th Trạng thái
+                                th Người Tạo
+                                th Cập Nhật Gần Nhất
+                                th Thao tác
+                        
+                            
+
+                        tbody 
+                            if(records.length >0)
+                                each item,index in records
+                                    tr 
+                                        td #{index+1}
+                                
+                                        td(style="margin: 10px; width:20%;") #{item.title}
+
+
+                                        td(style="margin: 10px; width:10%;")
+                                            img(src=item.thumbnail, alt="" class="w-75")
+
+                                    
+                                        if(role.permission.includes("account_edit"))
+                                            td(style="margin: 10px")
+                                                if(item.status == "active")
+                                                    a(href="javascript:;" class="badge badge-success" style="background-color:green; text-decoration: none; margin-top: 15px;"
+                                                    pro_status = item.status
+                                                    pro_id = item.id
+                                                    button-change-status
+                                                    ) Hoạt Động
+                                                else
+                                                    a(href="javascript:;" class="badge badge-danger" style="background-color:red; text-decoration: none; margin-top: 15px;"
+                                                    pro_status = item.status
+                                                    pro_id = item.id
+                                                    button-change-status
+                                                    ) Dừng Hoạt Động
+                                        else 
+                                            td(style="margin: 10px")
+                                                if(item.status == "active")
+                                                    a(href="javascript:;" class="badge badge-success" style="background-color:green; text-decoration: none; margin-top: 15px;"
+                                                    pro_status = item.status
+                                                    pro_id = item.id
+                                                   
+                                                    ) Hoạt Động
+                                                else
+                                                    a(href="javascript:;" class="badge badge-danger" style="background-color:red; text-decoration: none; margin-top: 15px;"
+                                                    pro_status = item.status
+                                                    pro_id = item.id
+                                                    
+                                                    ) Dừng Hoạt Động
+
+                                        td
+                                         
+                                            p   #{item.user_name}
+                                            
+                                            +formateDate(item.createdBy.createdAt)
+                                        td
+                                         
+                                            p   #{item.user_update}
+                                            
+                                            +formateDateTime(item.UpdatedBy.UpdateAt)
+ 
+
+                                            td 
+                                                    a(
+
+                                                        href=`/admin/news/detail/${item.id}`
+                                                        class="btn btn-success btn-sm" style="margin: 10px" update_button) Chi tiết
+                                                    if(role.permission.includes("account_edit"))
+                                                        a(
+
+                                                            href=`/admin/news/edit/${item.id}`
+                                                            class="btn btn-warning btn-sm" style="margin: 10px" update_button) Sửa
+
+                                                    if(role.permission.includes("account_delete"))
+                                                        button(class="btn btn-danger btn-sm ml-1"
+                                                            pro_id= item.id
+                                                            delete_buttons) Xóa
+                            else 
+                                h1 chưa có bài viết nào
+        +pagination(pagination)
+        form(action="", 
+        method="POST",
+        product-path="/admin/news/change-status"
+        id="form-change-status")
+
+        form(action="", 
+        method="POST",
+        product-path="/admin/news/delete"
+        id="form-delete")
+
+        script(src="/admin/JS/product.js") 
+    else 
+        h1 Bạn không có quyền sử dụng chức năng này

@@ -5,6 +5,7 @@ const categoryRoute = require("./product.category.route")
 const rolesRoute = require("./roles.route")
 const accountRoute = require("./account.route")
 const authRoute = require("./auth.route")
+const newsRoute = require("./news.route")
 const MyaccountRoute = require("./my_account.route")
 const systemconfig = require("../../config/system")
 const auth = require("../../middleware/authentication")
@@ -32,6 +33,9 @@ module.exports = (app) => {
 
     app.use(PATH_ADMIN + "/account",
         auth.auth,MyaccountRoute)
+
+    app.use(PATH_ADMIN + "/news",
+        auth.auth,newsRoute)
 
     app.use(PATH_ADMIN + "/trashbin",
         auth.auth, trashbinRoute);

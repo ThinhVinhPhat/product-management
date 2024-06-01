@@ -9,3 +9,14 @@ module.exports.Random = (length) =>{
     return result;
     
 }
+module.exports.RandomNum = (length) =>{
+    const character = 
+    "0123456789";
+    var result = ""
+    for(var i=0;i<length;i++){
+        result+= character.charAt(Math.floor(Math.random() * character.length) )
+    }
+
+    return result;
+    
+}

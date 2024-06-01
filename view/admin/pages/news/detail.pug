@@ -1,0 +1,29 @@
+extends ../../layout/default.pug
+
+block title 
+    title title 
+
+block main 
+    h1(class= "mb-4") Chi tiết sản phẩm
+
+    if(product.title)
+        div(class="mb-4") Tên sản phẩm: <b>#{product.title}</b>
+    if(product.description)
+        div(class="mb-4") Mô tả: <b>!{product.description}</b>
+    if(product.thumbnail)
+        div(class="mb-4") Hình ảnh: 
+            img(src=product.thumbnail, alt="", style="width: 100px;")
+
+    if(product.status)
+        div(class="mb-4") 
+            span Trạng thái: 
+            if (product.status === "active") 
+                span(class="btn btn-success" style="padding:2px;" ) Hoạt động
+            else
+                span(class="btn btn-danger" style="padding:2px;") Dừng Hoạt động
+    
+    if(role.permission.includes("product_detail"))
+
+        a(href=`/admin/news/edit/${product.id}`
+        class="btn btn-warning"
+        ) Chỉnh sửa 
